@@ -1124,6 +1124,125 @@ function WHotel() {
   )
 }
 
+/** office district on the upper Diagonal: L'Illa, Hello World HQ and glass neighbors */
+const DIAGONAL_TILT = -0.258 // aligns long facades with the avenue
+
+function helloWorldSignTexture() {
+  const c = document.createElement('canvas')
+  c.width = 512
+  c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = '#0a2240'
+  g.fillRect(0, 0, 512, 128)
+  // splash roundel
+  g.fillStyle = '#0056b5'
+  g.beginPath()
+  g.arc(64, 64, 40, 0, Math.PI * 2)
+  g.fill()
+  g.fillStyle = '#f0e9dc'
+  g.beginPath()
+  g.moveTo(64, 34)
+  g.bezierCurveTo(76, 52, 82, 62, 82, 72)
+  g.arc(64, 72, 18, 0, Math.PI, false)
+  g.bezierCurveTo(46, 62, 52, 52, 64, 34)
+  g.fill()
+  g.fillStyle = '#f0e9dc'
+  g.font = '800 44px "Plus Jakarta Sans", Helvetica, sans-serif'
+  g.textBaseline = 'middle'
+  g.fillText('HELLO WORLD', 122, 68)
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.anisotropy = 4
+  return t
+}
+
+function DiagonalOffices() {
+  const glass = useMemo(() => {
+    const t = glassTexture().clone()
+    t.needsUpdate = true
+    t.repeat.set(3, 6)
+    return new THREE.MeshLambertMaterial({ map: t, color: '#9fbdd4' })
+  }, [])
+  const signMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ map: helloWorldSignTexture() }),
+    [],
+  )
+  return (
+    <group>
+      {/* L'Illa Diagonal — Moneo's "horizontal skyscraper", long white stepped slab */}
+      <group position={[-160, 0, -112]} rotation-y={DIAGONAL_TILT}>
+        <mesh position={[0, 5.5, 0]}>
+          <boxGeometry args={[46, 11, 11]} />
+          {L('#eef0ea', true)}
+        </mesh>
+        <mesh position={[-8, 13, 0]}>
+          <boxGeometry args={[18, 4, 10]} />
+          {L('#e6e8e2', true)}
+        </mesh>
+        <mesh position={[13, 12.2, 0]}>
+          <boxGeometry args={[12, 2.4, 10]} />
+          {L('#e6e8e2', true)}
+        </mesh>
+        {/* window slots */}
+        {[-18, -9, 0, 9, 18].map((x) => (
+          <mesh key={x} position={[x, 5.5, 5.6]}>
+            <boxGeometry args={[5.5, 8, 0.15]} />
+            {L('#33415a')}
+          </mesh>
+        ))}
+        {/* street canopy */}
+        <mesh position={[0, 1.6, 6.4]}>
+          <boxGeometry args={[44, 0.35, 2.4]} />
+          {L('#c9cbc4')}
+        </mesh>
+      </group>
+
+      {/* Hello World HQ — navy glass tower, beige spine, rooftop sign */}
+      <group position={[-122, 0, -97]} rotation-y={DIAGONAL_TILT}>
+        <mesh position={[0, 11, 0]}>
+          <boxGeometry args={[10, 22, 9]} />
+          <meshStandardMaterial color="#28486e" roughness={0.3} metalness={0.2} />
+        </mesh>
+        <mesh position={[3.2, 11, 0]}>
+          <boxGeometry args={[1.6, 22, 9.4]} />
+          {L('#f0e9dc')}
+        </mesh>
+        <mesh position={[0, 22.4, 0]}>
+          <boxGeometry args={[10.5, 0.8, 9.5]} />
+          {L('#0a2240')}
+        </mesh>
+        {/* rooftop billboard, readable from the seaward side + the tram */}
+        <group position={[0, 24.6, 0]}>
+          <mesh>
+            <boxGeometry args={[11, 3.4, 0.5]} />
+            {L('#0a2240')}
+          </mesh>
+          <mesh position={[0, 0, 0.3]} material={signMat}>
+            <planeGeometry args={[10.4, 2.6]} />
+          </mesh>
+        </group>
+      </group>
+
+      {/* glass neighbors along the avenue */}
+      {[
+        { p: [-185, -125] as [number, number], h: 17, w: 9 },
+        { p: [-105, -85] as [number, number], h: 20, w: 8 },
+        { p: [-95, -103] as [number, number], h: 14, w: 8 },
+      ].map(({ p, h, w }, i) => (
+        <group key={i} position={[p[0], 0, p[1]]} rotation-y={DIAGONAL_TILT}>
+          <mesh position={[0, h / 2, 0]} material={glass}>
+            <boxGeometry args={[w, h, w]} />
+          </mesh>
+          <mesh position={[0, h + 0.4, 0]}>
+            <boxGeometry args={[w * 0.8, 0.8, w * 0.8]} />
+            {L('#c2c6cc')}
+          </mesh>
+        </group>
+      ))}
+    </group>
+  )
+}
+
 /** the Port Olímpic twins — Torre Mapfre + Hotel Arts (no labels, skyline flavor) */
 function TorresMapfre() {
   const gridGlass = useMemo(() => {
@@ -1441,6 +1560,7 @@ export default function Landmarks() {
       <TorreGlories />
       <WHotel />
       <TorresMapfre />
+      <DiagonalOffices />
       <MontjuicCastle />
       <Teleferic />
       <PortCranes />

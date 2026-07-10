@@ -138,6 +138,11 @@ export default function App() {
                 <img className="sc-photo" src={stop.photo} alt={stop.name} loading="lazy" />
                 <p className="sc-desc">{stop.description}</p>
               </div>
+              {stop.contact && (
+                <a className="sc-contact" href={stop.contact.href}>
+                  ✉&nbsp;&nbsp;{stop.contact.label}
+                </a>
+              )}
               <BottleCarousel key={stop.id} bottles={stop.bottles} />
             </div>
             <div className="sc-nav">

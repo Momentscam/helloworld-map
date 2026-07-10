@@ -7,6 +7,7 @@ const MINOR: Array<{ name: string; at: [number, number, number] }> = [
   { name: 'LA PEDRERA', at: [-11, 24, -77] },
   { name: 'PARC GÜELL', at: [20, 20, -185] },
   { name: 'CAMP NOU', at: [-210, 20, -35] },
+  { name: "L'ILLA DIAGONAL", at: [-160, 22, -112] },
   { name: 'RCDE STADIUM', at: [-300, 18, 60] },
   { name: "L'AQUÀRIUM", at: [28, 18, 140] },
   { name: 'MONTJUÏC', at: [-230, 52, 135] },

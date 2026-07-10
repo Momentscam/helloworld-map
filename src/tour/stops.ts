@@ -12,6 +12,8 @@ export interface TourStop {
   photo: string
   /** Hello World bottles available at this stop */
   bottles: StopBottle[]
+  /** optional call-to-action link shown under the description */
+  contact?: { label: string; href: string }
   cam: { pos: [number, number, number]; target: [number, number, number] }
   /** 3D anchor for the clickable label pill */
   world: [number, number, number]
@@ -97,6 +99,18 @@ export const STOPS: TourStop[] = [
     bottles: [{ name: 'In Art We Trust', img: BOTTLE_MODERNISTA }],
     cam: { pos: [148, 26, 120], target: [110, 6, 72] },
     world: [110, 12, 72],
+  },
+  {
+    id: 'hello-world-hq',
+    label: 'HELLO WORLD OFFICES',
+    name: 'Hello World Offices',
+    description:
+      'Home base, up on the Diagonal next to L’Illa. We’re a small team of water lovers bottling Barcelona one landmark at a time — this is where the ideas (and the tastings) happen. If you’d like to partner with us, we’d love to hear from you.',
+    photo: '/images_map/hello_world_offices.svg',
+    bottles: [],
+    contact: { label: 'hello@drinkhelloworld.com', href: 'mailto:hello@drinkhelloworld.com' },
+    cam: { pos: [-82, 44, -44], target: [-138, 12, -104] },
+    world: [-122, 30, -97],
   },
 ]
 
