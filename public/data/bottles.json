@@ -1,0 +1,436 @@
+[
+  {
+    "id": "b-sagrada-glow",
+    "name": "Sagrada Glow",
+    "series": "Barri Icons",
+    "rarity": "legendary",
+    "releaseDate": "2024-09-01",
+    "description": "Amber glass etched with the Nativity façade. Catches sunset light like the basilica itself.",
+    "imageUrl": "/images/bottles/b-sagrada-glow.svg",
+    "machineIds": [
+      "m-sagrada-familia",
+      "m-passeig-gracia"
+    ]
+  },
+  {
+    "id": "b-torre-glories",
+    "name": "Torre Glòries",
+    "series": "Barri Icons",
+    "rarity": "epic",
+    "releaseDate": "2024-09-01",
+    "description": "Iridescent bullet-shaped bottle mirroring the tower’s shifting skin.",
+    "imageUrl": "/images/bottles/b-torre-glories.svg",
+    "machineIds": [
+      "m-rambla-poblenou",
+      "m-palo-alto"
+    ]
+  },
+  {
+    "id": "b-casa-batllo",
+    "name": "Casa Batlló Scales",
+    "series": "Barri Icons",
+    "rarity": "epic",
+    "releaseDate": "2024-10-15",
+    "description": "Trencadís-patterned glass in ocean blues and greens.",
+    "imageUrl": "/images/bottles/b-casa-batllo.svg",
+    "machineIds": [
+      "m-passeig-gracia",
+      "m-enric-granados"
+    ]
+  },
+  {
+    "id": "b-bunkers-sunrise",
+    "name": "Bunkers Sunrise",
+    "series": "Barri Icons",
+    "rarity": "rare",
+    "releaseDate": "2024-10-15",
+    "description": "Gradient glass from night blue to dawn orange, like mornings at the Carmel bunkers.",
+    "imageUrl": "/images/bottles/b-bunkers-sunrise.svg",
+    "machineIds": [
+      "m-placa-del-sol",
+      "m-carrer-verdi",
+      "m-sagrada-familia"
+    ]
+  },
+  {
+    "id": "b-park-guell",
+    "name": "Park Güell Mosaic",
+    "series": "Barri Icons",
+    "rarity": "rare",
+    "releaseDate": "2024-11-01",
+    "description": "Salamander-mosaic wrap on frosted glass.",
+    "imageUrl": "/images/bottles/b-park-guell.svg",
+    "machineIds": [
+      "m-placa-del-sol",
+      "m-carrer-verdi",
+      "m-sagrada-familia"
+    ]
+  },
+  {
+    "id": "b-arc-triomf",
+    "name": "Arc de Triomf",
+    "series": "Barri Icons",
+    "rarity": "common",
+    "releaseDate": "2024-11-01",
+    "description": "Brick-red matte bottle with Mudéjar arch relief.",
+    "imageUrl": "/images/bottles/b-arc-triomf.svg",
+    "machineIds": [
+      "m-passeig-born",
+      "m-santa-caterina",
+      "m-sagrada-familia",
+      "m-macba",
+      "m-passeig-gracia"
+    ]
+  },
+  {
+    "id": "b-pedrera-wave",
+    "name": "La Pedrera Wave",
+    "series": "Barri Icons",
+    "rarity": "rare",
+    "releaseDate": "2024-12-01",
+    "description": "Undulating stone-grey glass, no straight lines anywhere.",
+    "imageUrl": "/images/bottles/b-pedrera-wave.svg",
+    "machineIds": [
+      "m-passeig-gracia",
+      "m-enric-granados",
+      "m-placa-del-sol"
+    ]
+  },
+  {
+    "id": "b-gothic-shadow",
+    "name": "Gothic Shadow",
+    "series": "Barri Icons",
+    "rarity": "common",
+    "releaseDate": "2024-12-01",
+    "description": "Charcoal bottle with the cathedral spires in relief.",
+    "imageUrl": "/images/bottles/b-gothic-shadow.svg",
+    "machineIds": [
+      "m-passeig-born",
+      "m-santa-caterina",
+      "m-macba",
+      "m-joan-de-borbo"
+    ]
+  },
+  {
+    "id": "b-montjuic-magic",
+    "name": "Montjuïc Magic Fountain",
+    "series": "Barri Icons",
+    "rarity": "common",
+    "releaseDate": "2025-01-10",
+    "description": "Colour-shifting label inspired by the Font Màgica light shows.",
+    "imageUrl": "/images/bottles/b-montjuic-magic.svg",
+    "machineIds": [
+      "m-poble-sec",
+      "m-sants-estacio",
+      "m-sant-antoni",
+      "m-macba"
+    ]
+  },
+  {
+    "id": "b-salt-line",
+    "name": "Salt Line",
+    "series": "Mediterrani",
+    "rarity": "common",
+    "releaseDate": "2025-02-01",
+    "description": "Clear glass with a single white salt-crust ring at the waterline.",
+    "imageUrl": "/images/bottles/b-salt-line.svg",
+    "machineIds": [
+      "m-joan-de-borbo",
+      "m-barceloneta-beach",
+      "m-passeig-born",
+      "m-rambla-poblenou",
+      "m-palo-alto"
+    ]
+  },
+  {
+    "id": "b-posidonia",
+    "name": "Posidònia",
+    "series": "Mediterrani",
+    "rarity": "rare",
+    "releaseDate": "2025-02-01",
+    "description": "Seagrass-green bottle; part of sales fund posidonia meadow restoration.",
+    "imageUrl": "/images/bottles/b-posidonia.svg",
+    "machineIds": [
+      "m-barceloneta-beach",
+      "m-joan-de-borbo"
+    ]
+  },
+  {
+    "id": "b-tramuntana",
+    "name": "Tramuntana",
+    "series": "Mediterrani",
+    "rarity": "epic",
+    "releaseDate": "2025-02-01",
+    "description": "Wind-swept spiral ribbing you can feel. Loud when the north wind blows.",
+    "imageUrl": "/images/bottles/b-tramuntana.svg",
+    "machineIds": [
+      "m-barceloneta-beach",
+      "m-palo-alto"
+    ]
+  },
+  {
+    "id": "b-mar-bella",
+    "name": "Mar Bella",
+    "series": "Mediterrani",
+    "rarity": "common",
+    "releaseDate": "2025-03-01",
+    "description": "Beach-glass turquoise, softly frosted like sea-tumbled shards.",
+    "imageUrl": "/images/bottles/b-mar-bella.svg",
+    "machineIds": [
+      "m-rambla-poblenou",
+      "m-palo-alto",
+      "m-barceloneta-beach",
+      "m-joan-de-borbo"
+    ]
+  },
+  {
+    "id": "b-xiringuito",
+    "name": "Xiringuito",
+    "series": "Mediterrani",
+    "rarity": "common",
+    "releaseDate": "2025-03-01",
+    "description": "Striped awning print — vermut hour at the beach bar.",
+    "imageUrl": "/images/bottles/b-xiringuito.svg",
+    "machineIds": [
+      "m-barceloneta-beach",
+      "m-joan-de-borbo",
+      "m-rambla-poblenou",
+      "m-passeig-born",
+      "m-poble-sec"
+    ]
+  },
+  {
+    "id": "b-medusa",
+    "name": "Medusa Bloom",
+    "series": "Mediterrani",
+    "rarity": "rare",
+    "releaseDate": "2025-04-01",
+    "description": "Translucent lilac with trailing tentacle streaks.",
+    "imageUrl": "/images/bottles/b-medusa.svg",
+    "machineIds": [
+      "m-barceloneta-beach",
+      "m-rambla-poblenou",
+      "m-santa-caterina"
+    ]
+  },
+  {
+    "id": "b-far-del-port",
+    "name": "Far del Port",
+    "series": "Mediterrani",
+    "rarity": "common",
+    "releaseDate": "2025-04-01",
+    "description": "Lighthouse-striped neck, glows faintly in the dark.",
+    "imageUrl": "/images/bottles/b-far-del-port.svg",
+    "machineIds": [
+      "m-joan-de-borbo",
+      "m-barceloneta-beach",
+      "m-passeig-born",
+      "m-sants-estacio"
+    ]
+  },
+  {
+    "id": "b-gavina",
+    "name": "Gavina",
+    "series": "Mediterrani",
+    "rarity": "common",
+    "releaseDate": "2025-05-01",
+    "description": "Seagull-white gloss with a thief’s eye printed near the cap.",
+    "imageUrl": "/images/bottles/b-gavina.svg",
+    "machineIds": [
+      "m-joan-de-borbo",
+      "m-barceloneta-beach",
+      "m-macba",
+      "m-rambla-poblenou",
+      "m-santa-caterina"
+    ]
+  },
+  {
+    "id": "b-correfoc",
+    "name": "Correfoc",
+    "series": "Festa Major",
+    "rarity": "legendary",
+    "releaseDate": "2024-09-20",
+    "description": "Devil-black glass with sparking ember flecks. Limited to Mercè week.",
+    "imageUrl": "/images/bottles/b-correfoc.svg",
+    "machineIds": [
+      "m-placa-del-sol"
+    ]
+  },
+  {
+    "id": "b-casteller",
+    "name": "Casteller",
+    "series": "Festa Major",
+    "rarity": "epic",
+    "releaseDate": "2024-09-20",
+    "description": "Nine stacked glass rings — an enxaneta silhouette on top.",
+    "imageUrl": "/images/bottles/b-casteller.svg",
+    "machineIds": [
+      "m-santa-caterina",
+      "m-sants-estacio"
+    ]
+  },
+  {
+    "id": "b-gegants",
+    "name": "Gegants",
+    "series": "Festa Major",
+    "rarity": "rare",
+    "releaseDate": "2024-09-20",
+    "description": "Twin giant figures dance around the label when you spin it.",
+    "imageUrl": "/images/bottles/b-gegants.svg",
+    "machineIds": [
+      "m-passeig-born",
+      "m-placa-del-sol",
+      "m-santa-caterina"
+    ]
+  },
+  {
+    "id": "b-paper-garlands",
+    "name": "Garlandes de Gràcia",
+    "series": "Festa Major",
+    "rarity": "common",
+    "releaseDate": "2025-08-01",
+    "description": "Paper-garland print from the Festa Major de Gràcia street contests.",
+    "imageUrl": "/images/bottles/b-paper-garlands.svg",
+    "machineIds": [
+      "m-placa-del-sol",
+      "m-carrer-verdi",
+      "m-enric-granados",
+      "m-sant-antoni"
+    ]
+  },
+  {
+    "id": "b-sardana",
+    "name": "Sardana",
+    "series": "Festa Major",
+    "rarity": "common",
+    "releaseDate": "2025-08-01",
+    "description": "Circle-dance motif rings the base; cobla brass on the cap.",
+    "imageUrl": "/images/bottles/b-sardana.svg",
+    "machineIds": [
+      "m-santa-caterina",
+      "m-passeig-born",
+      "m-sants-estacio",
+      "m-poble-sec",
+      "m-carrer-verdi"
+    ]
+  },
+  {
+    "id": "b-diable-petit",
+    "name": "Diable Petit",
+    "series": "Festa Major",
+    "rarity": "common",
+    "releaseDate": "2025-08-01",
+    "description": "A small devil with a big firework. Pocket-size edition.",
+    "imageUrl": "/images/bottles/b-diable-petit.svg",
+    "machineIds": [
+      "m-poble-sec",
+      "m-sant-antoni",
+      "m-macba",
+      "m-placa-del-sol",
+      "m-carrer-verdi",
+      "m-sants-estacio"
+    ]
+  },
+  {
+    "id": "b-trabucaire",
+    "name": "Trabucaire",
+    "series": "Festa Major",
+    "rarity": "rare",
+    "releaseDate": "2025-09-01",
+    "description": "Gunpowder-grey with a red faixa sash band.",
+    "imageUrl": "/images/bottles/b-trabucaire.svg",
+    "machineIds": [
+      "m-carrer-verdi",
+      "m-poble-sec"
+    ]
+  },
+  {
+    "id": "b-neon-rambla",
+    "name": "Neon Rambla",
+    "series": "Neon Nights",
+    "rarity": "rare",
+    "releaseDate": "2025-05-15",
+    "description": "Electric magenta tube-light lettering on smoked glass.",
+    "imageUrl": "/images/bottles/b-neon-rambla.svg",
+    "machineIds": [
+      "m-macba",
+      "m-poble-sec",
+      "m-passeig-born"
+    ]
+  },
+  {
+    "id": "b-razz-club",
+    "name": "Razz Static",
+    "series": "Neon Nights",
+    "rarity": "epic",
+    "releaseDate": "2025-05-15",
+    "description": "Glitch-pattern wrap that strobes under UV light.",
+    "imageUrl": "/images/bottles/b-razz-club.svg",
+    "machineIds": [
+      "m-rambla-poblenou",
+      "m-passeig-born"
+    ]
+  },
+  {
+    "id": "b-apolo-nit",
+    "name": "Nit d’Apolo",
+    "series": "Neon Nights",
+    "rarity": "rare",
+    "releaseDate": "2025-06-01",
+    "description": "Deep red velvet-touch coating, ticket-stub label.",
+    "imageUrl": "/images/bottles/b-apolo-nit.svg",
+    "machineIds": [
+      "m-poble-sec",
+      "m-sant-antoni",
+      "m-macba"
+    ]
+  },
+  {
+    "id": "b-gat-de-botero",
+    "name": "El Gat",
+    "series": "Neon Nights",
+    "rarity": "common",
+    "releaseDate": "2025-06-01",
+    "description": "Botero’s fat cat glowing green on the Rambla del Raval.",
+    "imageUrl": "/images/bottles/b-gat-de-botero.svg",
+    "machineIds": [
+      "m-macba",
+      "m-sant-antoni",
+      "m-poble-sec",
+      "m-enric-granados"
+    ]
+  },
+  {
+    "id": "b-bicing-2am",
+    "name": "Bicing 2AM",
+    "series": "Neon Nights",
+    "rarity": "common",
+    "releaseDate": "2025-07-01",
+    "description": "Red-and-white frame print; the ride home you barely remember.",
+    "imageUrl": "/images/bottles/b-bicing-2am.svg",
+    "machineIds": [
+      "m-enric-granados",
+      "m-passeig-gracia",
+      "m-placa-del-sol",
+      "m-rambla-poblenou",
+      "m-sant-antoni"
+    ]
+  },
+  {
+    "id": "b-super-nit",
+    "name": "Súper de Nit",
+    "series": "Neon Nights",
+    "rarity": "common",
+    "releaseDate": "2025-07-01",
+    "description": "Corner-store fluorescent glow in a bottle. Open 24h.",
+    "imageUrl": "/images/bottles/b-super-nit.svg",
+    "machineIds": [
+      "m-macba",
+      "m-poble-sec",
+      "m-santa-caterina",
+      "m-joan-de-borbo",
+      "m-carrer-verdi",
+      "m-sants-estacio"
+    ]
+  }
+]

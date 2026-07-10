@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(316 42% 20%)"/><stop offset="1" stop-color="hsl(356 48% 12%)"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="hsl(316 75% 62%)"/><stop offset="0.5" stop-color="hsl(316 85% 72%)"/><stop offset="1" stop-color="hsl(341 70% 55%)"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="260" rx="16" fill="url(#bg)"/>
+  <circle cx="100" cy="120" r="72" fill="hsl(316 60% 50% / 0.14)"/>
+  <g fill="url(#glass)">
+    <rect x="84" y="28" width="32" height="18" rx="9"/>
+    <path d="M92 46 h16 v22 c14 10 20 22 20 40 v86 c0 12 -9 20 -20 20 h-16 c-11 0 -20 -8 -20 -20 v-86 c0 -18 6 -30 20 -40 z" transform="translate(0 0)"/>
+  </g>
+  <rect x="63" y="128" width="74" height="46" rx="8" fill="hsl(316 30% 14% / 0.55)"/>
+  <rect x="72" y="46" width="8" height="120" rx="4" fill="#ffffff" opacity="0.28"/>
+  <rect x="14" y="14" width="10" height="10" rx="5" fill="#4f9cf9"/>
+  <text x="100" y="152" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff" opacity="0.92">Gegants</text>
+  <text x="100" y="166" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#fff" opacity="0.6">FESTA MAJOR</text>
+  <text x="100" y="242" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="2" fill="#4f9cf9">RARE</text>
+</svg>

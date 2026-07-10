@@ -1,0 +1,316 @@
+[
+  {
+    "id": "m-placa-del-sol",
+    "name": "Plaça del Sol",
+    "lat": 41.40281,
+    "lng": 2.15614,
+    "address": "Plaça del Sol, 13, 08012 Barcelona",
+    "neighborhood": "Vila de Gràcia",
+    "district": "Gràcia",
+    "status": "active",
+    "installDate": "2025-03-14",
+    "photoUrl": "/images/machines/m-placa-del-sol.svg",
+    "bottleIds": [
+      "b-bunkers-sunrise",
+      "b-park-guell",
+      "b-pedrera-wave",
+      "b-correfoc",
+      "b-gegants",
+      "b-paper-garlands",
+      "b-diable-petit",
+      "b-bicing-2am"
+    ]
+  },
+  {
+    "id": "m-carrer-verdi",
+    "name": "Verdi Cinema Corner",
+    "lat": 41.40492,
+    "lng": 2.15701,
+    "address": "Carrer de Verdi, 32, 08012 Barcelona",
+    "neighborhood": "Vila de Gràcia",
+    "district": "Gràcia",
+    "status": "active",
+    "installDate": "2025-04-02",
+    "photoUrl": "/images/machines/m-carrer-verdi.svg",
+    "bottleIds": [
+      "b-bunkers-sunrise",
+      "b-park-guell",
+      "b-paper-garlands",
+      "b-sardana",
+      "b-diable-petit",
+      "b-trabucaire",
+      "b-super-nit"
+    ]
+  },
+  {
+    "id": "m-passeig-gracia",
+    "name": "Passeig de Gràcia",
+    "lat": 41.39172,
+    "lng": 2.16486,
+    "address": "Passeig de Gràcia, 43, 08007 Barcelona",
+    "neighborhood": "La Dreta de l’Eixample",
+    "district": "Eixample",
+    "status": "active",
+    "installDate": "2024-11-20",
+    "photoUrl": "/images/machines/m-passeig-gracia.svg",
+    "bottleIds": [
+      "b-sagrada-glow",
+      "b-casa-batllo",
+      "b-arc-triomf",
+      "b-pedrera-wave",
+      "b-bicing-2am"
+    ]
+  },
+  {
+    "id": "m-enric-granados",
+    "name": "Enric Granados",
+    "lat": 41.38961,
+    "lng": 2.15903,
+    "address": "Carrer d’Enric Granados, 56, 08008 Barcelona",
+    "neighborhood": "L’Antiga Esquerra de l’Eixample",
+    "district": "Eixample",
+    "status": "active",
+    "installDate": "2025-01-09",
+    "photoUrl": "/images/machines/m-enric-granados.svg",
+    "bottleIds": [
+      "b-casa-batllo",
+      "b-pedrera-wave",
+      "b-paper-garlands",
+      "b-gat-de-botero",
+      "b-bicing-2am"
+    ]
+  },
+  {
+    "id": "m-sagrada-familia",
+    "name": "Sagrada Família",
+    "lat": 41.40362,
+    "lng": 2.17435,
+    "address": "Av. de Gaudí, 4, 08025 Barcelona",
+    "neighborhood": "Sagrada Família",
+    "district": "Eixample",
+    "status": "active",
+    "installDate": "2024-10-05",
+    "photoUrl": "/images/machines/m-sagrada-familia.svg",
+    "bottleIds": [
+      "b-sagrada-glow",
+      "b-bunkers-sunrise",
+      "b-park-guell",
+      "b-arc-triomf"
+    ]
+  },
+  {
+    "id": "m-sant-antoni",
+    "name": "Mercat de Sant Antoni",
+    "lat": 41.37893,
+    "lng": 2.16312,
+    "address": "Carrer del Comte d’Urgell, 1, 08011 Barcelona",
+    "neighborhood": "Sant Antoni",
+    "district": "Eixample",
+    "status": "offline",
+    "installDate": "2025-02-17",
+    "photoUrl": "/images/machines/m-sant-antoni.svg",
+    "bottleIds": [
+      "b-montjuic-magic",
+      "b-paper-garlands",
+      "b-diable-petit",
+      "b-apolo-nit",
+      "b-gat-de-botero",
+      "b-bicing-2am"
+    ]
+  },
+  {
+    "id": "m-passeig-born",
+    "name": "Passeig del Born",
+    "lat": 41.38513,
+    "lng": 2.18304,
+    "address": "Passeig del Born, 17, 08003 Barcelona",
+    "neighborhood": "Sant Pere, Santa Caterina i la Ribera",
+    "district": "Ciutat Vella",
+    "status": "active",
+    "installDate": "2024-09-12",
+    "photoUrl": "/images/machines/m-passeig-born.svg",
+    "bottleIds": [
+      "b-arc-triomf",
+      "b-gothic-shadow",
+      "b-salt-line",
+      "b-xiringuito",
+      "b-far-del-port",
+      "b-gegants",
+      "b-sardana",
+      "b-neon-rambla",
+      "b-razz-club"
+    ]
+  },
+  {
+    "id": "m-santa-caterina",
+    "name": "Mercat de Santa Caterina",
+    "lat": 41.3862,
+    "lng": 2.1789,
+    "address": "Av. de Francesc Cambó, 16, 08003 Barcelona",
+    "neighborhood": "Sant Pere, Santa Caterina i la Ribera",
+    "district": "Ciutat Vella",
+    "status": "active",
+    "installDate": "2025-05-01",
+    "photoUrl": "/images/machines/m-santa-caterina.svg",
+    "bottleIds": [
+      "b-arc-triomf",
+      "b-gothic-shadow",
+      "b-medusa",
+      "b-gavina",
+      "b-casteller",
+      "b-gegants",
+      "b-sardana",
+      "b-super-nit"
+    ]
+  },
+  {
+    "id": "m-macba",
+    "name": "MACBA Skate Plaza",
+    "lat": 41.38333,
+    "lng": 2.16672,
+    "address": "Plaça dels Àngels, 1, 08001 Barcelona",
+    "neighborhood": "El Raval",
+    "district": "Ciutat Vella",
+    "status": "active",
+    "installDate": "2025-03-28",
+    "photoUrl": "/images/machines/m-macba.svg",
+    "bottleIds": [
+      "b-arc-triomf",
+      "b-gothic-shadow",
+      "b-montjuic-magic",
+      "b-gavina",
+      "b-diable-petit",
+      "b-neon-rambla",
+      "b-apolo-nit",
+      "b-gat-de-botero",
+      "b-super-nit"
+    ]
+  },
+  {
+    "id": "m-joan-de-borbo",
+    "name": "Passeig Joan de Borbó",
+    "lat": 41.37858,
+    "lng": 2.18933,
+    "address": "Passeig de Joan de Borbó, 44, 08003 Barcelona",
+    "neighborhood": "La Barceloneta",
+    "district": "Ciutat Vella",
+    "status": "active",
+    "installDate": "2024-08-30",
+    "photoUrl": "/images/machines/m-joan-de-borbo.svg",
+    "bottleIds": [
+      "b-gothic-shadow",
+      "b-salt-line",
+      "b-posidonia",
+      "b-mar-bella",
+      "b-xiringuito",
+      "b-far-del-port",
+      "b-gavina",
+      "b-super-nit"
+    ]
+  },
+  {
+    "id": "m-barceloneta-beach",
+    "name": "Barceloneta Beachfront",
+    "lat": 41.37662,
+    "lng": 2.19205,
+    "address": "Passeig Marítim de la Barceloneta, 30, 08003 Barcelona",
+    "neighborhood": "La Barceloneta",
+    "district": "Ciutat Vella",
+    "status": "active",
+    "installDate": "2025-06-15",
+    "photoUrl": "/images/machines/m-barceloneta-beach.svg",
+    "bottleIds": [
+      "b-salt-line",
+      "b-posidonia",
+      "b-tramuntana",
+      "b-mar-bella",
+      "b-xiringuito",
+      "b-medusa",
+      "b-far-del-port",
+      "b-gavina"
+    ]
+  },
+  {
+    "id": "m-rambla-poblenou",
+    "name": "Rambla del Poblenou",
+    "lat": 41.40301,
+    "lng": 2.20447,
+    "address": "Rambla del Poblenou, 78, 08005 Barcelona",
+    "neighborhood": "El Poblenou",
+    "district": "Sant Martí",
+    "status": "active",
+    "installDate": "2025-01-24",
+    "photoUrl": "/images/machines/m-rambla-poblenou.svg",
+    "bottleIds": [
+      "b-torre-glories",
+      "b-salt-line",
+      "b-mar-bella",
+      "b-xiringuito",
+      "b-medusa",
+      "b-gavina",
+      "b-razz-club",
+      "b-bicing-2am"
+    ]
+  },
+  {
+    "id": "m-palo-alto",
+    "name": "Palo Alto Market",
+    "lat": 41.41043,
+    "lng": 2.22099,
+    "address": "Carrer dels Pellaires, 30, 08019 Barcelona",
+    "neighborhood": "Diagonal Mar i el Front Marítim del Poblenou",
+    "district": "Sant Martí",
+    "status": "offline",
+    "installDate": "2025-04-19",
+    "photoUrl": "/images/machines/m-palo-alto.svg",
+    "bottleIds": [
+      "b-torre-glories",
+      "b-salt-line",
+      "b-tramuntana",
+      "b-mar-bella"
+    ]
+  },
+  {
+    "id": "m-poble-sec",
+    "name": "Carrer de Blai",
+    "lat": 41.37284,
+    "lng": 2.1637,
+    "address": "Carrer de Blai, 28, 08004 Barcelona",
+    "neighborhood": "El Poble-sec",
+    "district": "Sants-Montjuïc",
+    "status": "active",
+    "installDate": "2025-02-03",
+    "photoUrl": "/images/machines/m-poble-sec.svg",
+    "bottleIds": [
+      "b-montjuic-magic",
+      "b-xiringuito",
+      "b-sardana",
+      "b-diable-petit",
+      "b-trabucaire",
+      "b-neon-rambla",
+      "b-apolo-nit",
+      "b-gat-de-botero",
+      "b-super-nit"
+    ]
+  },
+  {
+    "id": "m-sants-estacio",
+    "name": "Sants Estació",
+    "lat": 41.37904,
+    "lng": 2.13984,
+    "address": "Plaça dels Països Catalans, 1, 08014 Barcelona",
+    "neighborhood": "Sants",
+    "district": "Sants-Montjuïc",
+    "status": "active",
+    "installDate": "2024-12-11",
+    "photoUrl": "/images/machines/m-sants-estacio.svg",
+    "bottleIds": [
+      "b-montjuic-magic",
+      "b-far-del-port",
+      "b-casteller",
+      "b-sardana",
+      "b-diable-petit",
+      "b-super-nit"
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# vercel
+.vercel/
+
+# os / editor cruft
+.DS_Store
+*.log
+
+# local env
+.env
+.env.local
+.env.*.local

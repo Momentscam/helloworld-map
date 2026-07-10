@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="hsl(205 55% 72%)"/><stop offset="1" stop-color="hsl(235 45% 48%)"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#g)"/>
+  <circle cx="640" cy="110" r="52" fill="#fff" opacity="0.75"/>
+  <g opacity="0.35" fill="hsl(205 40% 25%)">
+    <rect x="90" y="300" width="120" height="160"/><rect x="230" y="250" width="90" height="210"/>
+    <rect x="340" y="330" width="140" height="130"/><rect x="500" y="270" width="110" height="190"/>
+    <rect x="630" y="340" width="90" height="120"/>
+  </g>
+  <rect x="0" y="460" width="800" height="60" fill="hsl(205 40% 22%)" opacity="0.5"/>
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <rect x="230" y="180" width="340" height="76" rx="14" fill="rgba(255,255,255,0.88)"/>
+    <text x="400" y="212" font-size="26" font-weight="700" fill="hsl(205 45% 25%)">Barcelona Airport</text>
+    <text x="400" y="238" font-size="13" fill="hsl(205 30% 35%)">PLACEHOLDER PHOTO — drop the real one here</text>
+    <text x="400" y="500" font-size="12" fill="#fff" opacity="0.85">public/images/places/airport.svg</text>
+  </g>
+</svg>
