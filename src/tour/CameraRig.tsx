@@ -140,10 +140,13 @@ export default function CameraRig() {
       return
     }
 
-    // keep the target on the board while exploring
+    // keep the target on the board while exploring. The y floor is well below
+    // ground because the mobile stop framing tilts the look-at point downward
+    // (below 0); a floor of 0 here would snap it back on arrival — the little
+    // "correction" jerk when a flight lands on mobile.
     c.target.x = THREE.MathUtils.clamp(c.target.x, -560, 560)
     c.target.z = THREE.MathUtils.clamp(c.target.z, -360, 420)
-    c.target.y = THREE.MathUtils.clamp(c.target.y, 0, 180)
+    c.target.y = THREE.MathUtils.clamp(c.target.y, -120, 180)
   })
 
   return (
