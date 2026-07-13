@@ -37,7 +37,6 @@ export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
         )}
         <div className="bc-slide" key={bottle.name}>
           <img src={bottle.img} alt={bottle.name} loading="lazy" />
-          <div className="bc-name">{bottle.name}</div>
         </div>
         {n > 1 && (
           <button
