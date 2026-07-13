@@ -4,7 +4,7 @@ import { useTour } from './store'
 
 const MINOR: Array<{ name: string; at: [number, number, number] }> = [
   { name: 'SAGRADA FAMÍLIA', at: [99, 52, -55] },
-  { name: 'LA PEDRERA', at: [-11, 24, -77] },
+  { name: 'LA PEDRERA', at: [11, 24, -77] },
   { name: 'PARC GÜELL', at: [20, 20, -185] },
   { name: 'CAMP NOU', at: [-210, 20, -35] },
   { name: "L'ILLA DIAGONAL", at: [-160, 22, -112] },

@@ -697,7 +697,7 @@ function SagradaFamilia() {
 function LaPedrera() {
   const chimneys: Array<[number, number]> = [[-3.6, -2.6], [-1, -3.4], [2.2, -2.2], [4, 0.6]]
   return (
-    <group position={[-11, 0, -77]}>
+    <group position={[11, 0, -77]}>
       {[0, 1, 2, 3, 4].map((i) => (
         <group key={i} position={[0, 1.3 + i * 2.9, 0]}>
           <mesh scale={[1.18, 1, 0.95]} rotation-y={i % 2 ? 0.32 : 0}>

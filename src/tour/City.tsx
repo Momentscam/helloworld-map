@@ -201,7 +201,7 @@ function Roads() {
 // ---------------------------------------------------------------- building data
 const AVOID: Array<[number, number, number]> = [
   [-11, -33, 16], // casa batlló
-  [-11, -77, 14], // la pedrera
+  [11, -77, 14], // la pedrera (mountain side of Pg. de Gràcia, opposite Casa Batlló)
   [99, -55, 27], // sagrada
   [33, 33, 15], // plaça catalunya
   [198, 22, 14], // torre glòries
