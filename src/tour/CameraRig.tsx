@@ -46,11 +46,6 @@ export default function CameraRig() {
     const stop = STOPS[stopIndex]
     const toP = new THREE.Vector3(...stop.cam.pos)
     const toT = new THREE.Vector3(...stop.cam.target)
-    // on mobile the stop card covers the lower half — tilt down so the
-    // subject sits in the visible upper part of the screen
-    if (stopIndex > 0 && window.matchMedia('(max-width: 860px)').matches) {
-      toT.y -= toP.distanceTo(toT) * 0.32
-    }
     const dist = camera.position.distanceTo(toP)
     if (dist < 1) return
     flight.current = {
@@ -64,6 +59,31 @@ export default function CameraRig() {
     useTour.getState().setFlying(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stopIndex, mode])
+
+  // On mobile the stop card covers the lower part of the screen. Instead of
+  // tilting the camera (which de-centres the subject), shift the projection
+  // upward with setViewOffset so the subject stays centred in the visible area
+  // above the card. Cleared on desktop / at the overview.
+  useEffect(() => {
+    const cam = camera as THREE.PerspectiveCamera
+    const apply = () => {
+      const mobile = window.matchMedia('(max-width: 860px)').matches
+      const cardOpen = stopIndex > 0
+      const w = window.innerWidth
+      const h = window.innerHeight
+      if (mobile && cardOpen) {
+        const card = document.querySelector('.stop-card') as HTMLElement | null
+        const cardH = card ? card.getBoundingClientRect().height : h * 0.46
+        cam.setViewOffset(w, h, 0, cardH / 2, w, h) // slide the image up by half the card
+      } else {
+        cam.clearViewOffset()
+      }
+      cam.updateProjectionMatrix()
+    }
+    apply()
+    window.addEventListener('resize', apply)
+    return () => window.removeEventListener('resize', apply)
+  }, [stopIndex, camera])
 
   useFrame((_, dt) => {
     const c = controls.current
@@ -140,13 +160,10 @@ export default function CameraRig() {
       return
     }
 
-    // keep the target on the board while exploring. The y floor is well below
-    // ground because the mobile stop framing tilts the look-at point downward
-    // (below 0); a floor of 0 here would snap it back on arrival — the little
-    // "correction" jerk when a flight lands on mobile.
+    // keep the target on the board while exploring
     c.target.x = THREE.MathUtils.clamp(c.target.x, -560, 560)
     c.target.z = THREE.MathUtils.clamp(c.target.z, -360, 420)
-    c.target.y = THREE.MathUtils.clamp(c.target.y, -120, 180)
+    c.target.y = THREE.MathUtils.clamp(c.target.y, 0, 180)
   })
 
   return (
