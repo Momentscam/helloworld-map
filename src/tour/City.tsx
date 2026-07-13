@@ -96,6 +96,7 @@ function Hills() {
     [150, -310, 80, 48], [300, -320, 90, 56], [420, -290, 70, 40], [-420, -310, 90, 50],
     [-330, -430, 110, 64], [-120, -460, 130, 70], [120, -440, 120, 62],
     [340, -450, 115, 58], [520, -400, 100, 48], [-540, -420, 105, 52],
+    [55, -298, 46, 58], // hilltop for the Torre de Collserola
   ]
   const hillMap = useMemo(() => {
     const t = terrainTexture('hill')
@@ -136,11 +137,7 @@ function Hills() {
       </mesh>
       {ridge.map(([x, z], i) => (
         <mesh key={i} geometry={ridgeGeoms[i]} position={[x, 0, z]}>
-          <meshLambertMaterial
-            map={hillMap}
-            color={i % 2 ? '#eaeedd' : '#ccd6b8'}
-            flatShading
-          />
+          <meshLambertMaterial map={hillMap} color={i % 2 ? '#eaeedd' : '#ccd6b8'} flatShading />
         </mesh>
       ))}
       {/* Montjuïc: flat summit so the castle sits on solid ground */}
@@ -150,6 +147,7 @@ function Hills() {
     </group>
   )
 }
+
 
 // ---------------------------------------------------------------- roads
 function Strip({ pts, width, color, y }: { pts: Pt[]; width: number; color: string; y: number }) {
@@ -604,6 +602,122 @@ function Clouds() {
   )
 }
 
+// ---------------------------------------------------------------- peripheral towns
+// full land boundary: the coast, plus the inland corners so the lookup keeps
+// following the shoreline past the last coast point (the NE/SW tails) instead
+// of flat-lining and letting houses spill into the sea.
+const COASTLINE: Pt[] = [[-680, -680], ...COAST, [680, -680]]
+
+/** z of the land edge at a given x (sea is z greater than this) */
+function coastZ(x: number): number {
+  const c = COASTLINE
+  if (x <= c[0][0]) return c[0][1]
+  for (let i = 1; i < c.length; i++) {
+    if (x <= c[i][0]) {
+      const t = (x - c[i - 1][0]) / (c[i][0] - c[i - 1][0])
+      return c[i - 1][1] + (c[i][1] - c[i - 1][1]) * t
+    }
+  }
+  return c[c.length - 1][1]
+}
+
+interface TownHouse {
+  x: number
+  z: number
+  w: number
+  d: number
+  h: number
+  rot: number
+  c: THREE.Color
+  roof: THREE.Color
+}
+
+// low house clusters ringing Barcelona — no labels, just built fabric:
+// the Vallès (Sant Cugat / Cerdanyola) behind Collserola, Badalona and the
+// Maresme up the NE coast, and L'Hospitalet / Cornellà to the SW.
+const TOWN_ITEMS: TownHouse[] = (() => {
+  const rng = mulberry32(9090)
+  const clusters = [
+    { cx: 150, cz: -616, rx: 98, rz: 44, n: 46 },
+    { cx: -250, cz: -606, rx: 86, rz: 42, n: 36 },
+    { cx: 500, cz: -34, rx: 92, rz: 46, n: 48 },
+    { cx: 560, cz: -120, rx: 60, rz: 58, n: 30 },
+    { cx: -350, cz: 112, rx: 76, rz: 40, n: 38 },
+  ]
+  const avoid: Array<[number, number, number]> = [
+    [-400, 185, 98], // airport
+    [-300, 60, 34], // rcde stadium
+    [-230, 135, 80], // montjuïc
+  ]
+  const wall = ['#e4d8c2', '#ddcfb4', '#e9dcc4', '#d8c9ab']
+  const roofs = ['#c26a45', '#b85f3d', '#cf7a52', '#a9583a']
+  const out: TownHouse[] = []
+  for (const cl of clusters) {
+    for (let k = 0; k < cl.n; k++) {
+      const a = rng() * Math.PI * 2
+      const rr = Math.sqrt(rng())
+      const x = cl.cx + Math.cos(a) * cl.rx * rr
+      const z = cl.cz + Math.sin(a) * cl.rz * rr
+      if (z > coastZ(x) - 14) continue // keep well inland of the shoreline
+      if (avoid.some(([ax, az, ar]) => Math.hypot(x - ax, z - az) < ar)) continue
+      out.push({
+        x,
+        z,
+        w: 4 + rng() * 4,
+        d: 4 + rng() * 4,
+        h: 3 + rng() * 4,
+        rot: (rng() - 0.5) * 0.7,
+        c: new THREE.Color(wall[Math.floor(rng() * wall.length)]),
+        roof: new THREE.Color(roofs[Math.floor(rng() * roofs.length)]),
+      })
+    }
+  }
+  return out
+})()
+
+function PeripheralTowns() {
+  const boxRef = useRef<THREE.InstancedMesh>(null)
+  const roofRef = useRef<THREE.InstancedMesh>(null)
+  const roofGeom = useMemo(() => {
+    const g = new THREE.ConeGeometry(1, 1, 4)
+    g.rotateY(Math.PI / 4)
+    g.translate(0, 0.5, 0)
+    return g
+  }, [])
+  useLayoutEffect(() => {
+    const box = boxRef.current
+    const roof = roofRef.current
+    if (!box || !roof) return
+    const m = new THREE.Matrix4()
+    const q = new THREE.Quaternion()
+    const up = new THREE.Vector3(0, 1, 0)
+    TOWN_ITEMS.forEach((b, i) => {
+      q.setFromAxisAngle(up, b.rot)
+      m.compose(new THREE.Vector3(b.x, b.h / 2, b.z), q, new THREE.Vector3(b.w, b.h, b.d))
+      box.setMatrixAt(i, m)
+      box.setColorAt(i, b.c)
+      m.compose(new THREE.Vector3(b.x, b.h, b.z), q, new THREE.Vector3(b.w * 0.72, 1.6 + b.h * 0.16, b.d * 0.72))
+      roof.setMatrixAt(i, m)
+      roof.setColorAt(i, b.roof)
+    })
+    box.instanceMatrix.needsUpdate = true
+    roof.instanceMatrix.needsUpdate = true
+    if (box.instanceColor) box.instanceColor.needsUpdate = true
+    if (roof.instanceColor) roof.instanceColor.needsUpdate = true
+  }, [roofGeom])
+  return (
+    <group>
+      <instancedMesh ref={boxRef} args={[undefined, undefined, TOWN_ITEMS.length]}>
+        <boxGeometry />
+        <meshLambertMaterial map={oldTownTexture()} />
+      </instancedMesh>
+      <instancedMesh ref={roofRef} args={[roofGeom, undefined, TOWN_ITEMS.length]}>
+        <meshLambertMaterial flatShading />
+      </instancedMesh>
+    </group>
+  )
+}
+
 export default function City() {
   return (
     <group>
@@ -614,6 +728,7 @@ export default function City() {
       <RoofClutter />
       <ScatterBlocks />
       <HipRoofs />
+      <PeripheralTowns />
       <Trees />
       <Clouds />
     </group>

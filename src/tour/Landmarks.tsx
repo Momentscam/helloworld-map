@@ -1504,6 +1504,78 @@ function BeachUmbrellas() {
   )
 }
 
+/** Torre de Collserola — Norman Foster's needle: shaft, platform "basket", mast */
+function TorreCollserola() {
+  // stands on the dedicated Collserola hilltop at (55, -298) in City's Hills
+  return (
+    <group position={[55, 56, -298]}>
+      {/* tapering concrete shaft */}
+      <mesh position={[0, 27, 0]}>
+        <cylinderGeometry args={[1, 1.9, 54, 6]} />
+        {L('#d8dce2')}
+      </mesh>
+      {/* the platform "basket" — stacked floors ~40% up */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <mesh key={i} position={[0, 21 + i * 2.3, 0]}>
+          <cylinderGeometry args={[3.3, 3.3, 1.7, 10]} />
+          {L(i % 2 ? '#eef1f5' : '#c9d0d8')}
+        </mesh>
+      ))}
+      {/* upper mast */}
+      <mesh position={[0, 62, 0]}>
+        <cylinderGeometry args={[0.5, 0.95, 18, 6]} />
+        {L('#c2c8d0')}
+      </mesh>
+      {/* antenna needle */}
+      <mesh position={[0, 84, 0]}>
+        <cylinderGeometry args={[0.12, 0.34, 32, 4]} />
+        {L('#eef1f5')}
+      </mesh>
+      {/* aircraft-warning light */}
+      <mesh position={[0, 100.5, 0]}>
+        <sphereGeometry args={[0.55, 6, 5]} />
+        <meshStandardMaterial color="#e8402f" emissive="#e8402f" emissiveIntensity={0.9} />
+      </mesh>
+    </group>
+  )
+}
+
+/** Poblenou / 22@ — the district's cluster of glass office towers */
+function PoblenouOffices() {
+  const glass = useMemo(() => {
+    const t = glassTexture().clone()
+    t.needsUpdate = true
+    t.repeat.set(2, 6)
+    return new THREE.MeshStandardMaterial({ map: t, color: '#8fb6cf', roughness: 0.3, metalness: 0.25 })
+  }, [])
+  const towers: Array<{ p: [number, number]; w: number; h: number }> = [
+    { p: [214, -8], w: 9, h: 26 },
+    { p: [236, 12], w: 8, h: 20 },
+    { p: [226, 36], w: 9, h: 30 },
+    { p: [252, -14], w: 8, h: 18 },
+    { p: [264, 22], w: 9, h: 24 },
+    { p: [282, -2], w: 8, h: 22 },
+    { p: [300, 30], w: 10, h: 29 },
+    { p: [320, 8], w: 8, h: 19 },
+    { p: [246, 52], w: 8, h: 16 },
+  ]
+  return (
+    <group>
+      {towers.map((t, i) => (
+        <group key={i} position={[t.p[0], 0, t.p[1]]}>
+          <mesh position={[0, t.h / 2, 0]} material={glass}>
+            <boxGeometry args={[t.w, t.h, t.w]} />
+          </mesh>
+          <mesh position={[0, t.h + 0.4, 0]}>
+            <boxGeometry args={[t.w * 0.8, 0.8, t.w * 0.8]} />
+            {L('#c2c6cc')}
+          </mesh>
+        </group>
+      ))}
+    </group>
+  )
+}
+
 export default function Landmarks() {
   const root = useRef<THREE.Group>(null)
   // Barcelona floods its landmarks at night: give every landmark material a
@@ -1558,6 +1630,8 @@ export default function Landmarks() {
       <CampNou />
       <RCDEStadium />
       <TorreGlories />
+      <PoblenouOffices />
+      <TorreCollserola />
       <WHotel />
       <TorresMapfre />
       <DiagonalOffices />
