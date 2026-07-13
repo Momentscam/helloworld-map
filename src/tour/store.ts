@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { STOPS, stopIndexById } from './stops'
 import type { RideTarget } from './rideState'
+import { track } from '../lib/analytics'
 
 export type ViewMode = 'tour' | 'explore' | 'ride'
 
@@ -96,6 +97,13 @@ useTour.subscribe((s, prev) => {
     if (s.mode === 'explore') p.set('view', 'explore')
     else p.delete('view')
     window.history.replaceState(null, '', `?${p.toString()}`)
+  }
+  // which landmarks people open, and which rides they take
+  if (s.stopIndex !== prev.stopIndex && s.stopIndex > 0) {
+    track('tour_stop_viewed', { stopId: STOPS[s.stopIndex].id, stopIndex: s.stopIndex })
+  }
+  if (s.mode === 'ride' && (prev.mode !== 'ride' || s.rideTarget !== prev.rideTarget)) {
+    track('ride_started', { ride: s.rideTarget })
   }
 })
 
