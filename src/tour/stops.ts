@@ -40,7 +40,7 @@ export const STOPS: TourStop[] = [
     label: 'CASA BATLLÓ',
     name: 'Casa Batlló',
     description:
-      'Gaudí’s dragon-backed masterpiece on Passeig de Gràcia — a facade of bone-white balconies and trencadís scales that shifts colour with the light. Our machine hides in the shadow of the chimneys.',
+      'Gaudí’s dragon-backed masterpiece on Passeig de Gràcia, all bone-white balconies and shimmering trencadís scales. Our machine hides beneath the chimneys.',
     photo: '/images_map/casa_batllo.jpg',
     bottles: [
       { name: 'Casa Batlló', img: BOTTLE_MODERNISTA },
@@ -54,7 +54,7 @@ export const STOPS: TourStop[] = [
     label: 'TEMPLE TIBIDABO',
     name: 'Temple de Tibidabo',
     description:
-      'Crowning the city’s highest peak at 512 m, the Sagrat Cor temple shares its summit with a century-old amusement park. On a clear day the whole board — sea to Collserola — unrolls below you.',
+      'The Sagrat Cor temple crowns the city’s highest peak, sharing its summit with a century-old funfair. On a clear day the whole board unrolls below.',
     photo: '/images_map/temple_tibidabo.jpeg',
     bottles: [{ name: 'Barcelona Modernista', img: BOTTLE_MODERNISTA }],
     cam: { pos: [-18, 172, -148], target: [-95, 122, -260] },
@@ -65,7 +65,7 @@ export const STOPS: TourStop[] = [
     label: 'LA BOQUERIA',
     name: 'Mercat de la Boqueria',
     description:
-      'Barcelona’s loudest larder since 1217. Under the stained-glass arch off La Rambla you’ll find pyramid-stacked fruit, curtains of jamón and fresh juice in every colour of our bottle rack.',
+      'Barcelona’s loudest larder since 1217, under a stained-glass arch off La Rambla. Pyramid-stacked fruit, curtains of jamón, and fresh juice in every colour.',
     photo: '/images_map/la_boqueria.jpeg',
     bottles: [
       { name: 'Casa Batlló', img: BOTTLE_MODERNISTA },
@@ -79,7 +79,7 @@ export const STOPS: TourStop[] = [
     label: 'BCN AIRPORT',
     name: 'Barcelona–El Prat Airport',
     description:
-      'Josep Tarradellas BCN–El Prat, the gateway square of the board. Watch arrivals skim the sea on final approach to 25R — and grab a farewell bottle at the T1 machine before security.',
+      'Josep Tarradellas BCN–El Prat, the gateway to the board. Watch arrivals skim the sea, then grab a farewell bottle at T1.',
     photo: '/images_map/bcn_ariport.jpg',
     bottles: [
       { name: 'Casa Batlló', img: BOTTLE_MODERNISTA },
@@ -94,7 +94,7 @@ export const STOPS: TourStop[] = [
     label: 'MOCO MUSEUM',
     name: 'Moco Museum',
     description:
-      'Banksy, KAWS and digital immersives inside a 16th-century palace on Carrer Montcada, five minutes from our Born machine. Old stone outside, new neon inside.',
+      'Banksy, KAWS and digital art inside a 16th-century palace on Carrer Montcada. Old stone outside, new neon inside.',
     photo: '/images_map/moco_museum.jpg',
     bottles: [{ name: 'In Art We Trust', img: BOTTLE_MODERNISTA }],
     cam: { pos: [148, 26, 120], target: [110, 6, 72] },
@@ -105,7 +105,7 @@ export const STOPS: TourStop[] = [
     label: 'HELLO WORLD OFFICES',
     name: 'Hello World Offices',
     description:
-      'Home base, up on the Diagonal next to L’Illa. We’re a small team of water lovers bottling Barcelona one landmark at a time — this is where the ideas (and the tastings) happen. If you’d like to partner with us, we’d love to hear from you.',
+      'Home base on the Diagonal, next to L’Illa — a small team bottling Barcelona one landmark at a time. Want to partner with us? We’d love to hear from you.',
     photo: '/images_map/hello_world_offices.svg',
     bottles: [],
     contact: { label: 'hello@drinkhelloworld.com', href: 'mailto:hello@drinkhelloworld.com' },

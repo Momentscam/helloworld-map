@@ -96,7 +96,6 @@ function Hills() {
     [150, -310, 80, 48], [300, -320, 90, 56], [420, -290, 70, 40], [-420, -310, 90, 50],
     [-330, -430, 110, 64], [-120, -460, 130, 70], [120, -440, 120, 62],
     [340, -450, 115, 58], [520, -400, 100, 48], [-540, -420, 105, 52],
-    [55, -298, 46, 58], // hilltop for the Torre de Collserola
   ]
   const hillMap = useMemo(() => {
     const t = terrainTexture('hill')
@@ -118,6 +117,12 @@ function Hills() {
   )
   const montjuicGeom = useMemo(
     () => displace(new THREE.CylinderGeometry(17, 72, 42, 10, 4), 5.5, 4, { from: 6, to: 19 }),
+    [],
+  )
+  // dedicated hill for the Torre de Collserola — left of Tibidabo, grounded
+  // (positioned at y=h/2 so the full cone sits on the ground, apex ~62)
+  const towerHillGeom = useMemo(
+    () => displace(new THREE.ConeGeometry(46, 62, 10, 4), 5, 8),
     [],
   )
   return (
@@ -143,6 +148,10 @@ function Hills() {
       {/* Montjuïc: flat summit so the castle sits on solid ground */}
       <mesh geometry={montjuicGeom} position={[-230, 21, 135]}>
         <meshLambertMaterial map={hillMap} color="#e4ead2" flatShading />
+      </mesh>
+      {/* Turó de Vilana — hill for the Torre de Collserola, left of Tibidabo */}
+      <mesh geometry={towerHillGeom} position={[-235, 31, -300]}>
+        <meshLambertMaterial map={hillMap} color="#ccd6b8" flatShading />
       </mesh>
     </group>
   )

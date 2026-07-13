@@ -1506,9 +1506,10 @@ function BeachUmbrellas() {
 
 /** Torre de Collserola — Norman Foster's needle: shaft, platform "basket", mast */
 function TorreCollserola() {
-  // stands on the dedicated Collserola hilltop at (55, -298) in City's Hills
+  // stands on the Turó de Vilana hill at (-235, -300) in City's Hills,
+  // left of Tibidabo
   return (
-    <group position={[55, 56, -298]}>
+    <group position={[-235, 58, -300]}>
       {/* tapering concrete shaft */}
       <mesh position={[0, 27, 0]}>
         <cylinderGeometry args={[1, 1.9, 54, 6]} />
