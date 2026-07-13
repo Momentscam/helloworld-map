@@ -4,19 +4,21 @@ import posthog from 'posthog-js'
  * PostHog analytics — pageviews, device/browser breakdowns, and click
  * autocapture (heatmaps) for the Atlas.
  *
- * Configured via env so no key is hardcoded (the `phc_` project key is a
- * public client key, not a secret, but env keeps it swappable):
- *   VITE_POSTHOG_KEY   — the "Project API Key" from PostHog project settings
- *   VITE_POSTHOG_HOST  — ingestion host; defaults to EU cloud
- * Set both locally in `.env` and in Vercel → Settings → Environment Variables.
+ * The default key below is the PUBLIC "Project API Key" (phc_…) for the
+ * "Hello World Atlas" PostHog project on EU cloud. phc_ keys are publishable
+ * client keys — designed to ship in the browser, not secrets. Override per
+ * environment with VITE_POSTHOG_KEY / VITE_POSTHOG_HOST if you ever move it.
  */
-const KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
+const KEY =
+  (import.meta.env.VITE_POSTHOG_KEY as string | undefined) ??
+  'phc_kmyZgwfWfZaPXcMyyehSsfrWySE4KFkKms7Q3Pi7Zsqx'
 const HOST = (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com'
 
 let started = false
 
 export function initAnalytics(): void {
-  if (started || !KEY) return // no-op in dev / when unconfigured
+  // only real deployments report — never send from local dev
+  if (started || !KEY || import.meta.env.DEV) return
   started = true
   posthog.init(KEY, {
     api_host: HOST,
