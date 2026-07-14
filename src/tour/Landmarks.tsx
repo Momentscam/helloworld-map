@@ -5,6 +5,9 @@ import { glassTexture, ledTexture, mosaicTexture, stripeTexture } from './textur
 import { windowGlowAt } from './lighting'
 import { useTour } from './store'
 import { rideStates } from './rideState'
+import { crowdRoar, fireworkPop, pointerCursor } from './delights'
+import { mulberry32 } from './geo'
+import { track } from '../lib/analytics'
 
 const L = (color: string, flat = false) => <meshLambertMaterial color={color} flatShading={flat} />
 
@@ -609,8 +612,33 @@ function SagradaFamilia() {
     [-7, -14, 34], [0, -15, 40], [7, -14, 34],
     [-7, 14, 34], [0, 15, 40], [7, 14, 34],
   ]
+  // delight: click the basilica and the eternal crane does a full, stately slew
+  const crane = useRef<THREE.Group>(null)
+  const spinStart = useRef<number | null>(null)
+  const SPIN_MS = 5000
+  useFrame(() => {
+    const g = crane.current
+    if (spinStart.current === null || !g) return
+    const t = (performance.now() - spinStart.current) / SPIN_MS
+    if (t >= 1) {
+      g.rotation.y = 0
+      spinStart.current = null
+      return
+    }
+    const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+    g.rotation.y = e * Math.PI * 2
+  })
   return (
-    <group position={[99, 0, -55]}>
+    <group
+      position={[99, 0, -55]}
+      onClick={(e) => {
+        e.stopPropagation()
+        if (spinStart.current !== null) return
+        spinStart.current = performance.now()
+        track('delight_triggered', { kind: 'sagrada_crane' })
+      }}
+      {...pointerCursor}
+    >
       <mesh position={[0, 7, 0]}>
         <boxGeometry args={[20, 14, 34]} />
         {L('#d9c49a', true)}
@@ -675,7 +703,7 @@ function SagradaFamilia() {
         {L('#e3c04d')}
       </mesh>
       {/* the eternal crane */}
-      <group position={[13, 0, 8]}>
+      <group ref={crane} position={[13, 0, 8]}>
         <mesh position={[0, 24, 0]}>
           <boxGeometry args={[1, 48, 1]} />
           {L('#e8b93c')}
@@ -780,6 +808,113 @@ function TowerCrane({
   )
 }
 
+/* ------------------------------------------------ goal celebration delight */
+const CELEB_MS = 4200
+const CELEB_BURSTS = 3
+const CELEB_N = 42 // particles per burst
+
+function useCelebration(where: string) {
+  const startRef = useRef<number | null>(null)
+  const trigger = () => {
+    if (startRef.current !== null && performance.now() - startRef.current < CELEB_MS) return
+    startRef.current = performance.now()
+    crowdRoar()
+    ;[0.25, 1.05, 1.85].forEach((d) => fireworkPop(d))
+    track('delight_triggered', { kind: 'goal_celebration', where })
+  }
+  return { startRef, trigger }
+}
+
+/** GOOOL — strobing floodlights + staggered firework bursts in club colours */
+function Celebration({
+  startRef,
+  colors,
+  height,
+}: {
+  startRef: React.RefObject<number | null>
+  colors: string[]
+  height: number
+}) {
+  const mesh = useRef<THREE.InstancedMesh>(null)
+  const light = useRef<THREE.PointLight>(null)
+  const parts = useMemo(() => {
+    const rng = mulberry32(5)
+    return Array.from({ length: CELEB_N * CELEB_BURSTS }, (_, k) => {
+      const b = Math.floor(k / CELEB_N)
+      const th = rng() * Math.PI * 2
+      const ph = Math.acos(2 * rng() - 1)
+      const sp = 10 + rng() * 9
+      return {
+        dx: Math.sin(ph) * Math.cos(th) * sp,
+        dy: Math.abs(Math.cos(ph)) * sp + 7,
+        dz: Math.sin(ph) * Math.sin(th) * sp,
+        ox: (rng() - 0.5) * 20,
+        oz: (rng() - 0.5) * 12,
+        delay: b * 0.8 + rng() * 0.15,
+      }
+    })
+  }, [])
+  const tmp = useMemo(
+    () => ({
+      m: new THREE.Matrix4(),
+      p: new THREE.Vector3(),
+      q: new THREE.Quaternion(),
+      s: new THREE.Vector3(),
+    }),
+    [],
+  )
+  useFrame(() => {
+    const im = mesh.current
+    const li = light.current
+    if (!im || !li) return
+    const st = startRef.current
+    const now = performance.now()
+    if (st === null || now - st > CELEB_MS) {
+      im.visible = false
+      li.intensity = 0
+      return
+    }
+    const t = (now - st) / 1000
+    im.visible = true
+    li.intensity = 2.4 + Math.sin(t * 22) * 2 // strobing floodlights
+    const LIFE = 1.5
+    parts.forEach((pt, k) => {
+      const lt = t - pt.delay
+      const alive = lt >= 0 && lt <= LIFE
+      tmp.s.setScalar(alive ? 0.62 * (1 - lt / LIFE) + 0.08 : 0.0001)
+      const l = THREE.MathUtils.clamp(lt, 0, LIFE)
+      tmp.p.set(
+        pt.ox + pt.dx * l,
+        height + 12 + pt.dy * l - 5 * l * l,
+        pt.oz + pt.dz * l,
+      )
+      tmp.m.compose(tmp.p, tmp.q, tmp.s)
+      im.setMatrixAt(k, tmp.m)
+    })
+    im.instanceMatrix.needsUpdate = true
+  })
+  return (
+    <group>
+      <pointLight ref={light} position={[0, height + 10, 0]} intensity={0} distance={95} color="#fff2c8" />
+      <instancedMesh
+        ref={mesh}
+        args={[undefined, undefined, CELEB_N * CELEB_BURSTS]}
+        visible={false}
+        frustumCulled={false}
+        onUpdate={(m) => {
+          for (let k = 0; k < CELEB_N * CELEB_BURSTS; k++) {
+            m.setColorAt(k, new THREE.Color(colors[Math.floor(k / CELEB_N) % colors.length]))
+          }
+          if (m.instanceColor) m.instanceColor.needsUpdate = true
+        }}
+      >
+        <sphereGeometry args={[0.6, 5, 4]} />
+        <meshBasicMaterial />
+      </instancedMesh>
+    </group>
+  )
+}
+
 /** Camp Nou mid-renovation: open garnet bowl, teal rim, bare concrete, cranes */
 function CampNou() {
   const STRETCH = 1.5
@@ -788,8 +923,18 @@ function CampNou() {
     [0.45, 20, 17, 2.4], [1.55, 19, 15, -0.6], [2.6, 21, 18, 1.2],
     [3.7, 20, 14, 3.6], [4.8, 19, 16, 0.4], [5.8, 21, 15, -1.8],
   ]
+  const { startRef, trigger } = useCelebration('camp-nou')
   return (
-    <group position={[-210, 0, -35]} rotation-y={0.15}>
+    <group
+      position={[-210, 0, -35]}
+      rotation-y={0.15}
+      onClick={(e) => {
+        e.stopPropagation()
+        trigger()
+      }}
+      {...pointerCursor}
+    >
+      <Celebration startRef={startRef} colors={['#a50044', '#004d98', '#e3c04d']} height={10} />
       <group scale={[STRETCH, 1, 1]}>
         {/* exposed concrete colonnade (renovation state) */}
         <mesh position={[0, 2.2, 0]}>
@@ -871,8 +1016,18 @@ function RCDEStadium() {
     { pos: [-15.5, 10.2, 0], size: [7.5, 0.7, 16], tilt: 0.1 },
     { pos: [15.5, 10.2, 0], size: [7.5, 0.7, 16], tilt: -0.1 },
   ]
+  const { startRef, trigger } = useCelebration('rcde-stadium')
   return (
-    <group position={[-300, 0, 60]} rotation-y={-0.35}>
+    <group
+      position={[-300, 0, 60]}
+      rotation-y={-0.35}
+      onClick={(e) => {
+        e.stopPropagation()
+        trigger()
+      }}
+      {...pointerCursor}
+    >
+      <Celebration startRef={startRef} colors={['#2f6bb0', '#eef0ee', '#60b5e6']} height={11} />
       {/* plaza */}
       <mesh position={[0, 0.15, 0]}>
         <boxGeometry args={[46, 0.3, 38]} />
@@ -1442,29 +1597,229 @@ function Teleferic() {
   )
 }
 
-function PortCranes() {
+const CONTAINER_COLORS = ['#c2453a', '#2f6bb0', '#3f9e63', '#e07a2f', '#5a5e66', '#e3c04d']
+
+/** ship-to-shore gantry crane: portal legs, machinery house, boom over the berth */
+function GantryCrane({ position }: { position: [number, number, number] }) {
   return (
-    <group>
-      {[[-148, 162], [-172, 170]].map(([x, z], i) => (
-        <group key={i} position={[x, 0, z]} rotation-y={i * 0.6}>
-          <mesh position={[-2.5, 5, 0]}>
-            <boxGeometry args={[1, 10, 1]} />
+    <group position={position}>
+      {[-3, 3].map((x) => (
+        <group key={x}>
+          <mesh position={[x, 6, -2.2]}>
+            <boxGeometry args={[0.8, 12, 0.8]} />
             {L('#c2453a')}
           </mesh>
-          <mesh position={[2.5, 5, 0]}>
-            <boxGeometry args={[1, 10, 1]} />
+          <mesh position={[x, 6, 2.2]}>
+            <boxGeometry args={[0.8, 12, 0.8]} />
             {L('#c2453a')}
           </mesh>
-          <mesh position={[0, 10.4, 3]} rotation-x={0.35}>
-            <boxGeometry args={[1, 1, 14]} />
+          {/* portal cross beam */}
+          <mesh position={[x, 11.6, 0]}>
+            <boxGeometry args={[0.7, 0.7, 5.2]} />
             {L('#c2453a')}
           </mesh>
         </group>
       ))}
-      <mesh position={[-158, 0.3, 178]} rotation-y={0.25}>
-        <boxGeometry args={[46, 0.6, 14]} />
-        {L('#b9b2a2')}
+      {/* main girder + boom cantilevered over the water */}
+      <mesh position={[0, 12.3, 3.4]}>
+        <boxGeometry args={[7.6, 0.9, 0.9]} />
+        {L('#c2453a')}
       </mesh>
+      <mesh position={[0, 13.4, 7.5]} rotation-x={-0.16}>
+        <boxGeometry args={[1, 0.8, 15]} />
+        {L('#c2453a')}
+      </mesh>
+      {/* machinery house + trolley cab */}
+      <mesh position={[0, 12.9, -1.6]}>
+        <boxGeometry args={[3.4, 2, 2.6]} />
+        {L('#8f99a8')}
+      </mesh>
+      <mesh position={[0, 12, 9.5]}>
+        <boxGeometry args={[1.4, 1.2, 1.4]} />
+        {L('#5a5e66')}
+      </mesh>
+    </group>
+  )
+}
+
+/** low-poly container ship: hull, wedge bow, stern castle, boxed cargo on deck */
+function CargoShip({
+  hull,
+  laden = 1,
+  refObj,
+}: {
+  hull: string
+  laden?: number
+  refObj?: React.RefObject<THREE.Group>
+}) {
+  const stacks = useMemo(() => {
+    const out: Array<{ x: number; y: number; z: number; c: string }> = []
+    const n = Math.round(6 * laden)
+    for (let i = 0; i < n; i++) {
+      const col = i % 3
+      const row = Math.floor(i / 3)
+      out.push({
+        x: -5.5 + col * 5.2,
+        y: 3.6 + (i % 2) * 0,
+        z: row === 0 ? -1.5 : 1.5,
+        c: CONTAINER_COLORS[(i * 2 + (row + col)) % CONTAINER_COLORS.length],
+      })
+    }
+    return out
+  }, [laden])
+  return (
+    <group ref={refObj}>
+      {/* hull + raked bow */}
+      <mesh position={[0, 1.4, 0]}>
+        <boxGeometry args={[20, 2.8, 6]} />
+        {L(hull)}
+      </mesh>
+      <mesh position={[11.6, 1.4, 0]} rotation-z={Math.PI / 2} rotation-y={Math.PI / 4}>
+        <coneGeometry args={[4.24, 3.6, 4]} />
+        {L(hull, true)}
+      </mesh>
+      {/* deck strip */}
+      <mesh position={[0, 2.9, 0]}>
+        <boxGeometry args={[20.4, 0.3, 6.2]} />
+        {L('#4a4f58')}
+      </mesh>
+      {/* stern castle + bridge */}
+      <mesh position={[-8, 4.6, 0]}>
+        <boxGeometry args={[3.2, 3.6, 5.4]} />
+        {L('#eef0ee')}
+      </mesh>
+      <mesh position={[-8, 6.8, 0]}>
+        <boxGeometry args={[3.6, 0.7, 6]} />
+        {L('#d3d8d6')}
+      </mesh>
+      <mesh position={[-8.8, 7.6, 0]}>
+        <boxGeometry args={[0.4, 1.1, 0.4]} />
+        {L('#c2453a')}
+      </mesh>
+      {/* deck cargo */}
+      {stacks.map((s, i) => (
+        <mesh key={i} position={[s.x, s.y, s.z]}>
+          <boxGeometry args={[4.6, 1.5, 2.6]} />
+          {L(s.c)}
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
+/** cargo traffic: ships sail a long harbour loop — in past the breakwater, out to sea */
+const CARGO_LANE = new THREE.CatmullRomCurve3(
+  [
+    [-220, 255], [-120, 250], [-40, 300], [-120, 385],
+    [-320, 390], [-450, 330], [-350, 270],
+  ].map(([x, z]) => new THREE.Vector3(x, 0, z)),
+  true,
+  'catmullrom',
+  0.4,
+)
+
+const CARGO_FLEET = [
+  { hull: '#31456b', laden: 1, phase: 0 },
+  { hull: '#7a3f3a', laden: 0.7, phase: 0.38 },
+  { hull: '#3a5c50', laden: 1, phase: 0.71 },
+]
+
+function CargoTraffic() {
+  const refs = useRef<Array<THREE.Group | null>>([])
+  const next = useMemo(() => new THREE.Vector3(), [])
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime / 170
+    CARGO_FLEET.forEach((s, i) => {
+      const g = refs.current[i]
+      if (!g) return
+      const u = (t + s.phase) % 1
+      CARGO_LANE.getPointAt(u, g.position)
+      CARGO_LANE.getPointAt((u + 0.004) % 1, next)
+      g.lookAt(next)
+      // hulls point +x, lookAt aims +z — swing a quarter turn
+      g.rotateY(-Math.PI / 2)
+    })
+  })
+  return (
+    <group>
+      {CARGO_FLEET.map((s, i) => (
+        <group key={i} ref={(el) => (refs.current[i] = el)}>
+          <CargoShip hull={s.hull} laden={s.laden} />
+        </group>
+      ))}
+    </group>
+  )
+}
+
+/** Port de Barcelona — container terminal, gantry cranes, breakwater and traffic */
+function Port() {
+  // stacked boxes on the apron
+  const stacks = useMemo(() => {
+    const out: Array<{ x: number; z: number; h: number; c: string }> = []
+    let k = 0
+    for (let row = 0; row < 2; row++) {
+      for (let col = 0; col < 8; col++) {
+        out.push({
+          x: -44 + col * 12 + (row % 2) * 3,
+          z: 1 + row * 5,
+          h: 1 + ((k * 7) % 3),
+          c: CONTAINER_COLORS[(k * 5 + row) % CONTAINER_COLORS.length],
+        })
+        k++
+      }
+    }
+    return out
+  }, [])
+
+  return (
+    <group>
+      <group position={[-170, 0, 196]} rotation-y={0.18}>
+        {/* main apron */}
+        <mesh position={[0, 0.6, 6]}>
+          <boxGeometry args={[110, 1.2, 30]} />
+          {L('#c9c2b2')}
+        </mesh>
+        {/* container yard */}
+        {stacks.map((s, i) => (
+          <group key={i} position={[s.x, 1.2, s.z]}>
+            {Array.from({ length: s.h }, (_, lvl) => (
+              <mesh key={lvl} position={[0, 1.2 + lvl * 2.4, 0]}>
+                <boxGeometry args={[7, 2.4, 3.2]} />
+                {L(lvl === s.h - 1 ? s.c : CONTAINER_COLORS[(i + lvl * 3) % CONTAINER_COLORS.length])}
+              </mesh>
+            ))}
+          </group>
+        ))}
+        {/* terminal shed */}
+        <mesh position={[-46, 3.6, 10]}>
+          <boxGeometry args={[14, 4.8, 9]} />
+          {L('#8f99a8')}
+        </mesh>
+        {/* gantry cranes working the berth */}
+        {[-30, -8, 14, 36].map((x) => (
+          <GantryCrane key={x} position={[x, 1.2, 17]} />
+        ))}
+        {/* ship alongside, half unloaded */}
+        <group position={[8, 0, 29]}>
+          <CargoShip hull="#31456b" laden={0.5} />
+        </group>
+        {/* breakwater + harbour beacon */}
+        <mesh position={[10, 0.7, 46]}>
+          <boxGeometry args={[120, 1.4, 5]} />
+          {L('#9a938a')}
+        </mesh>
+        <group position={[68, 0, 46]}>
+          <mesh position={[0, 3.2, 0]}>
+            <cylinderGeometry args={[0.9, 1.1, 5.2, 8]} />
+            {L('#eef0ee')}
+          </mesh>
+          <mesh position={[0, 6.2, 0]}>
+            <cylinderGeometry args={[0.6, 0.7, 1.2, 8]} />
+            {L('#c2453a')}
+          </mesh>
+        </group>
+      </group>
+      <CargoTraffic />
     </group>
   )
 }
@@ -1638,7 +1993,7 @@ export default function Landmarks() {
       <DiagonalOffices />
       <MontjuicCastle />
       <Teleferic />
-      <PortCranes />
+      <Port />
       <ColumbusColumn />
       <BeachUmbrellas />
     </group>

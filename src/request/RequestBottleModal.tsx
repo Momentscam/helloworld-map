@@ -183,14 +183,6 @@ export default function RequestBottleModal() {
           ✕
         </button>
 
-        {step !== 'done' && (
-          <div className="rq-steps">
-            <span className={step === 'select' ? 'on' : ''}>01 SELECT PLACES</span>
-            <i>—</i>
-            <span className={step === 'email' ? 'on' : ''}>02 YOUR EMAIL</span>
-          </div>
-        )}
-
         {step === 'select' && (
           <div className="rq-step" key="select">
             <h2 className="rq-title" id="rq-title">

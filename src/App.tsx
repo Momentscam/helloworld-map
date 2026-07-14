@@ -10,6 +10,43 @@ import { useTour, type MoveKey } from './tour/store'
 
 const WASD = new Set(['w', 'a', 's', 'd'])
 
+/* small drawn glyphs for the ride cluster — stroke follows the button colour */
+const rideSvg = (paths: React.ReactNode) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {paths}
+  </svg>
+)
+
+const RIDE_GLYPHS = {
+  tram: rideSvg(
+    <>
+      <path d="M9 2.5h6M12 2.5V5" />
+      <rect x="6" y="5" width="12" height="13" rx="2.5" />
+      <path d="M6 13.5h12M9.5 21h.01M14.5 21h.01" />
+    </>,
+  ),
+  plane: rideSvg(
+    <path d="M12 3v7.5M12 10.5 3.5 14v1.8l8.5-2.3 8.5 2.3V14L12 10.5M12 13.5v4l-3 2.2V21l3-1 3 1v-1.3l-3-2.2" />,
+  ),
+  teleferic: rideSvg(
+    <>
+      <path d="M2 4.5 22 2.5M12 3.5V7" />
+      <rect x="7.5" y="7" width="9" height="11" rx="2" />
+      <path d="M7.5 11.5h9" />
+    </>,
+  ),
+}
+
 export default function App() {
   const stopIndex = useTour((s) => s.stopIndex)
   const mode = useTour((s) => s.mode)
@@ -90,6 +127,9 @@ export default function App() {
             <span>{String(i + 1).padStart(2, '0')}</span> {s.label} <i>›</i>
           </button>
         ))}
+        <button className="ti-start" onClick={() => (showCard ? next() : setStop(1))}>
+          {showCard ? <>NEXT STOP&nbsp;&nbsp;›</> : <>▶&nbsp;&nbsp;START THE TOUR</>}
+        </button>
         <button
           className="ti-request"
           onClick={() => {
@@ -102,30 +142,38 @@ export default function App() {
       </nav>
 
       <div className="hud">
-        {(
-          [
-            ['tram', '#06', 'RIDE THE TRAM'],
-            ['plane', '#07', 'RIDE THE TIBIDABO PLANE'],
-            ['teleferic', '#08', 'RIDE THE TELEFÈRIC'],
-          ] as const
-        ).map(([target, num, label]) => {
-          const riding = mode === 'ride' && rideTarget === target
-          return (
-            <button
-              key={target}
-              className={`hud-btn ride${riding ? ' riding' : ''}`}
-              onClick={() => (riding ? setMode('tour') : useTour.getState().startRide(target))}
-            >
-              <em>{num}</em>
-              <strong className="on">{riding ? 'STOP RIDING' : label}</strong>
-            </button>
-          )
-        })}
+        <div className="hud-head">RIDES</div>
+        <div className="hud-row">
+          {(
+            [
+              ['tram', 'TRAM', RIDE_GLYPHS.tram],
+              ['plane', 'TIBIDABO PLANE', RIDE_GLYPHS.plane],
+              ['teleferic', 'TELEFÈRIC', RIDE_GLYPHS.teleferic],
+            ] as const
+          ).map(([target, label, glyph]) => {
+            const riding = mode === 'ride' && rideTarget === target
+            return (
+              <button
+                key={target}
+                className={`hud-btn ride${riding ? ' riding' : ''}`}
+                title={riding ? 'Stop riding' : `Ride the ${label.toLowerCase()}`}
+                onClick={() => (riding ? setMode('tour') : useTour.getState().startRide(target))}
+              >
+                {glyph}
+                <strong className="on">{riding ? 'STOP' : label}</strong>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       <aside className={`stop-card${showCard ? ' open' : ''}`} aria-hidden={!showCard}>
         {showCard && (
           <>
+            <div className="sc-spine" aria-hidden="true">
+              HELLO WORLD&nbsp;&nbsp;·&nbsp;&nbsp;STOP {String(stopIndex).padStart(2, '0')}
+              &nbsp;&nbsp;·&nbsp;&nbsp;{stop.label}&nbsp;&nbsp;·&nbsp;&nbsp;BARCELONA
+            </div>
             <button className="sc-close" onClick={() => setStop(0)} aria-label="Back to overview">
               ✕
             </button>

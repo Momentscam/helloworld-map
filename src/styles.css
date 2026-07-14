@@ -106,7 +106,7 @@ button {
 .tour-index {
   position: absolute;
   left: 16px;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   z-index: 60;
   background: var(--paper);
@@ -171,7 +171,8 @@ button {
   color: var(--signal);
 }
 
-/* ---------- bottom-left HUD ---------- */
+/* ---------- bottom-left ride cluster ----------
+   one quiet group, subordinate to the tour index — glyphs carry the meaning */
 .hud {
   position: absolute;
   left: 16px;
@@ -179,52 +180,60 @@ button {
   z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+}
+
+.hud-head {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #2c4a70;
+  padding-left: 2px;
+  text-shadow:
+    0 1px 3px rgba(240, 233, 220, 0.95),
+    0 0 9px rgba(240, 233, 220, 0.75);
+}
+
+.hud-row {
+  display: flex;
+  gap: 6px;
 }
 
 .hud-btn {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 14px;
-  background: var(--paper);
+  gap: 6px;
+  padding: 7px 11px;
+  background: rgba(240, 233, 220, 0.82);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   border: 1px solid var(--line);
   border-radius: 9px;
-  box-shadow: var(--shadow);
   font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  letter-spacing: 0.1em;
   color: var(--ink-soft);
-  width: fit-content;
+  transition: background 0.12s, color 0.12s;
 }
 
-.hud-btn em {
-  font-style: normal;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  opacity: 0.75;
-  margin-right: 2px;
+.hud-btn svg {
+  flex-shrink: 0;
 }
 
 .hud-btn strong {
   font-weight: 700;
-  color: var(--ink-soft);
 }
 
-.hud-btn strong.on {
-  color: var(--ink);
-}
-
-.hud-btn.ride strong.on {
+.hud-btn:hover {
+  background: var(--paper);
   color: var(--signal);
 }
 
 .hud-btn.riding {
+  background: var(--signal);
   border-color: var(--signal);
-}
-
-.hud-btn:hover {
-  background: var(--paper-2);
+  color: #f0e9dc;
 }
 
 /* ---------- 3D pin labels ---------- */
@@ -234,10 +243,12 @@ button {
   gap: 7px;
   white-space: nowrap;
   padding: 6px 11px;
-  background: var(--paper);
+  background: rgba(240, 233, 220, 0.72);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   border: 1px solid var(--line);
   border-radius: 999px;
-  box-shadow: 0 4px 14px rgba(10, 34, 64, 0.2);
+  box-shadow: 0 4px 14px rgba(10, 34, 64, 0.14);
   font-family: var(--mono);
   font-size: 11.5px;
   font-weight: 700;
@@ -248,11 +259,11 @@ button {
 
 button.pin-label:hover {
   transform: translateY(-2px) scale(1.04);
-  background: #f7f1e4;
+  background: rgba(247, 241, 228, 0.88);
 }
 
 .pin-label.active {
-  background: var(--signal);
+  background: rgba(0, 86, 181, 0.86);
   border-color: var(--signal);
   color: #f0e9dc;
 }
@@ -272,12 +283,14 @@ button.pin-label:hover {
   font-weight: 600;
   letter-spacing: 0.16em;
   color: var(--ink-soft);
-  background: rgba(240, 233, 220, 0.85);
+  background: rgba(240, 233, 220, 0.62);
   box-shadow: none;
   pointer-events: none;
 }
 
-/* ---------- stop card ---------- */
+/* ---------- stop card ----------
+   styled like the label of a Hello World bottle: a double rule frame and a
+   strip of vertical micro-text up the left edge, like the label's side seam */
 .stop-card {
   position: absolute;
   top: 16px;
@@ -286,10 +299,10 @@ button.pin-label:hover {
   width: 344px;
   z-index: 70;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1.5px solid rgba(10, 34, 64, 0.5);
   border-radius: 12px;
   box-shadow: var(--shadow);
-  padding: 18px 18px 14px;
+  padding: 18px 18px 14px 46px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -299,6 +312,40 @@ button.pin-label:hover {
   transition:
     transform 0.34s cubic-bezier(0.32, 0.72, 0.25, 1),
     visibility 0s 0.34s;
+}
+
+/* inner hairline of the double rule */
+.stop-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(10, 34, 64, 0.25);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* vertical micro-text, reading bottom-to-top */
+.sc-spine {
+  position: absolute;
+  left: 9px;
+  top: 6px;
+  bottom: 6px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--ink-soft);
+  border-left: 1px solid rgba(10, 34, 64, 0.18);
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
 .stop-card.open {
@@ -356,7 +403,7 @@ button.pin-label:hover {
 
 .sc-title {
   font-family: var(--serif);
-  font-size: 27px;
+  font-size: 30px;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.08;
@@ -409,42 +456,39 @@ button.pin-label:hover {
   color: #f0e9dc;
 }
 
-/* bottle carousel */
+/* bottle carousel — an open shelf, not a tray: the cut-out bottle stands on
+   an elliptical ground shadow and cross-fades between slides */
 .bc-stage {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 40px 14px;
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+  height: 204px;
 }
 
-.bc-slide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 9px;
-  animation: bc-slide-in 0.32s cubic-bezier(0.32, 0.72, 0.25, 1);
-}
-
-@keyframes bc-slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(16px);
-  }
-}
-
-.bc-slide img {
-  height: 150px;
-  max-width: 100%;
+.bc-img {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  height: 182px;
+  max-width: calc(100% - 76px);
   object-fit: contain;
-  border-radius: 10px;
-  background: #fdfcf9;
-  border: 1px solid var(--line);
-  padding: 8px 14px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(10, 34, 64, 0.14));
+}
+
+.bc-img.on {
+  opacity: 1;
+}
+
+.bc-shelf {
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  transform: translateX(-50%);
+  width: 58%;
+  height: 16px;
+  background: radial-gradient(ellipse at center, rgba(10, 34, 64, 0.26), rgba(10, 34, 64, 0) 68%);
 }
 
 .bc-arrow {
@@ -494,8 +538,8 @@ button.pin-label:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bc-slide {
-    animation: none;
+  .bc-img {
+    transition: none;
   }
   .bc-dot {
     transition: none;
@@ -604,6 +648,13 @@ button.pin-label:hover {
   color: #2c4a70;
 }
 
+/* desktop's Start CTA lives inside the tour panel; the floating pair is mobile's */
+@media (min-width: 861px) {
+  .start-hint {
+    display: none;
+  }
+}
+
 /* ---------- time-of-day bar ---------- */
 .time-bar {
   position: absolute;
@@ -622,21 +673,80 @@ button.pin-label:hover {
 }
 
 .tb-preset {
-  font-size: 14px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
   padding: 3px;
   border-radius: 6px;
-  transition: transform 0.1s;
+  color: var(--ink-soft);
+  transition: transform 0.1s, color 0.1s;
 }
 
 .tb-preset:hover {
-  transform: scale(1.25);
+  transform: scale(1.18);
+  color: var(--signal);
 }
 
-.time-bar input[type='range'] {
+/* the track is the information: night → dawn → day → dusk → night.
+   Sunrise sits at ~31% (07:24), sunset at ~84% (20:12). */
+.tb-range {
+  --track: linear-gradient(
+    90deg,
+    #0b1f3a 0%,
+    #10294c 24%,
+    #e89a63 29%,
+    #ffd9a0 32%,
+    #93cdef 42%,
+    #a9dcf6 62%,
+    #f8c57e 78%,
+    #e0794a 84%,
+    #1b3457 89%,
+    #0b1f3a 100%
+  );
+  --thumb: #ffd23f; /* sun by day… */
+  appearance: none;
+  -webkit-appearance: none;
   width: 150px;
-  accent-color: var(--signal);
+  height: 17px;
+  background: none;
   cursor: pointer;
+}
+
+.tb-range.night {
+  --thumb: #e6edf8; /* …moon by night */
+}
+
+.tb-range::-webkit-slider-runnable-track {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--track);
+  border: 1px solid rgba(10, 34, 64, 0.3);
+}
+
+.tb-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: 2px solid var(--ink);
+  box-shadow: 0 1px 4px rgba(10, 34, 64, 0.35);
+}
+
+.tb-range::-moz-range-track {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--track);
+  border: 1px solid rgba(10, 34, 64, 0.3);
+}
+
+.tb-range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: 2px solid var(--ink);
+  box-shadow: 0 1px 4px rgba(10, 34, 64, 0.35);
 }
 
 .tb-time {
@@ -680,9 +790,10 @@ button.pin-label:hover {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.08em;
-  color: var(--ink-soft);
-  background: rgba(240, 233, 220, 0.88);
-  border: 1px solid var(--line);
+  color: #2c4a70;
+  background: rgba(240, 233, 220, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   border-radius: 999px;
   padding: 4px 12px;
   transition: right 0.34s cubic-bezier(0.32, 0.72, 0.25, 1);
@@ -708,10 +819,10 @@ button.pin-label:hover {
   right: 16px;
   bottom: 34px;
   z-index: 60;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
+  background: rgba(240, 233, 220, 0.58);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 12px;
   padding: 10px 14px 11px;
   text-align: center;
   user-select: none;
@@ -784,6 +895,29 @@ button.pin-label:hover {
   font-style: normal;
   color: var(--signal);
   font-weight: 700;
+}
+
+/* primary CTA inside the tour panel — desktop only; mobile keeps the
+   floating bottom-centre pair */
+.ti-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 8px);
+  margin: 10px 4px 2px;
+  padding: 10px 12px;
+  background: var(--signal);
+  color: #f0e9dc;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  transition: transform 0.14s;
+}
+
+.ti-start:hover {
+  transform: translateY(-1px) scale(1.02);
 }
 
 /* ---------- request a new bottle ---------- */
@@ -1267,10 +1401,17 @@ button:focus-visible {
     bottom: 0;
     width: 100%;
     max-height: 50dvh;
+    border: 1px solid var(--line);
     border-radius: 16px 16px 0 0;
     transform: translateY(110%);
     padding: 9px 14px 8px;
     gap: 5px;
+  }
+
+  /* the label frame + spine need room the bottom sheet doesn't have */
+  .stop-card::before,
+  .sc-spine {
+    display: none;
   }
 
   .stop-card.open {
@@ -1320,19 +1461,23 @@ button:focus-visible {
     font-size: 10.5px;
   }
 
-  /* compact bottle carousel so it fits inside the card */
+  /* compact bottle shelf so it fits inside the card */
   .sc-bottles {
     gap: 3px;
   }
 
   .bc-stage {
-    padding: 8px 32px 8px;
-    border-radius: 10px;
+    height: 92px;
   }
 
-  .bc-slide img {
-    height: 72px;
-    padding: 5px 10px;
+  .bc-img {
+    height: 78px;
+    bottom: 10px;
+  }
+
+  .bc-shelf {
+    bottom: 4px;
+    height: 10px;
   }
 
   .bc-arrow {

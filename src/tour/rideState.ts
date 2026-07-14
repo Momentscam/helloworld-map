@@ -19,3 +19,7 @@ export const RIDE_LABELS: Record<RideTarget, string> = {
   plane: 'RIDE THE TIBIDABO PLANE',
   teleferic: 'RIDE THE TELEFÈRIC',
 }
+
+if (import.meta.env.DEV) {
+  ;(window as unknown as Record<string, unknown>).__rides = rideStates
+}

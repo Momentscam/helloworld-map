@@ -12,6 +12,8 @@ import {
 } from './textures'
 import { windowGlowAt } from './lighting'
 import { useTour } from './store'
+import { pointerCursor, rainPatter } from './delights'
+import { track } from '../lib/analytics'
 
 const COAST: Pt[] = [
   [-620, 250], [-400, 230], [-250, 185], [-60, 150], [120, 115], [250, 95], [420, 45], [620, 10],
@@ -573,8 +575,14 @@ function Trees() {
 }
 
 // ---------------------------------------------------------------- clouds
+const RAIN_DROPS = 140
+const RAIN_MS = 2600
+const CLOUD_TINTS = ['#ffffff', '#f4f9ff'] // resting colours, restored after the shower
+
 function Clouds() {
   const group = useRef<THREE.Group>(null)
+  const rainRef = useRef<THREE.InstancedMesh>(null)
+  const rain = useRef<{ idx: number; until: number } | null>(null)
   const clouds = useMemo(() => {
     const rng = mulberry32(99)
     return Array.from({ length: 7 }, () => ({
@@ -585,18 +593,93 @@ function Clouds() {
       v: 2.5 + rng() * 3,
     }))
   }, [])
-  useFrame((_, dt) => {
+  const drops = useMemo(() => {
+    const rng = mulberry32(7)
+    return Array.from({ length: RAIN_DROPS }, () => ({
+      a: rng() * Math.PI * 2,
+      r: Math.sqrt(rng()),
+      phase: rng(),
+    }))
+  }, [])
+  const tmp = useMemo(
+    () => ({
+      m: new THREE.Matrix4(),
+      p: new THREE.Vector3(),
+      q: new THREE.Quaternion(),
+      s: new THREE.Vector3(1, 1, 1),
+    }),
+    [],
+  )
+
+  const tintCloud = (idx: number, wet: boolean) => {
+    const cloud = group.current?.children[idx]
+    cloud?.children.forEach((m, k) => {
+      const mesh = m as THREE.Mesh
+      ;(mesh.material as THREE.MeshLambertMaterial).color.set(
+        wet ? (k === 0 ? '#a9b6c4' : '#9aa8b8') : CLOUD_TINTS[k],
+      )
+    })
+  }
+
+  const startRain = (idx: number) => {
+    if (rain.current) tintCloud(rain.current.idx, false)
+    rain.current = { idx, until: performance.now() + RAIN_MS }
+    tintCloud(idx, true)
+    rainPatter(RAIN_MS / 1000)
+    track('delight_triggered', { kind: 'rain_cloud' })
+  }
+
+  useFrame(({ clock }, dt) => {
     const g = group.current
     if (!g) return
-    g.children.forEach((c, i) => {
-      c.position.x += clouds[i].v * dt
-      if (c.position.x > 760) c.position.x = -760
+    // only the first N children are clouds — the rain mesh shares this group
+    clouds.forEach((c, i) => {
+      const child = g.children[i]
+      child.position.x += c.v * dt
+      if (child.position.x > 760) child.position.x = -760
     })
+    const rm = rainRef.current
+    if (!rm) return
+    const rn = rain.current
+    if (!rn) {
+      rm.visible = false
+      return
+    }
+    if (performance.now() > rn.until) {
+      tintCloud(rn.idx, false)
+      rain.current = null
+      rm.visible = false
+      return
+    }
+    // streaks fall from the drifting cloud down to the board
+    const cloud = g.children[rn.idx]
+    const c = clouds[rn.idx]
+    rm.visible = true
+    const t = clock.elapsedTime
+    drops.forEach((d, k) => {
+      const fall = (d.phase + t * 0.6) % 1
+      tmp.p.set(
+        cloud.position.x + Math.cos(d.a) * d.r * c.s * 1.1,
+        cloud.position.y * (1 - fall),
+        cloud.position.z + Math.sin(d.a) * d.r * c.s * 0.65,
+      )
+      tmp.m.compose(tmp.p, tmp.q, tmp.s)
+      rm.setMatrixAt(k, tmp.m)
+    })
+    rm.instanceMatrix.needsUpdate = true
   })
   return (
     <group ref={group}>
       {clouds.map((c, i) => (
-        <group key={i} position={[c.x, c.y, c.z]}>
+        <group
+          key={i}
+          position={[c.x, c.y, c.z]}
+          onClick={(e) => {
+            e.stopPropagation()
+            startRain(i)
+          }}
+          {...pointerCursor}
+        >
           <mesh scale={[c.s, c.s * 0.45, c.s * 0.7]}>
             <icosahedronGeometry args={[1, 0]} />
             <meshLambertMaterial color="#ffffff" flatShading />
@@ -607,6 +690,15 @@ function Clouds() {
           </mesh>
         </group>
       ))}
+      <instancedMesh
+        ref={rainRef}
+        args={[undefined, undefined, RAIN_DROPS]}
+        visible={false}
+        frustumCulled={false}
+      >
+        <boxGeometry args={[0.14, 5, 0.14]} />
+        <meshBasicMaterial color="#8fc2e8" transparent opacity={0.6} />
+      </instancedMesh>
     </group>
   )
 }

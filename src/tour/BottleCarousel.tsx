@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { StopBottle } from './stops'
 
-/** one bottle at a time: arrows, pill-dot pagination, 5 s auto-advance (paused on hover) */
+/** one bottle at a time on an open shelf: cross-fade between slides,
+    arrows + pill-dot pagination, 5 s auto-advance (paused on hover) */
 export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
   const [index, setIndex] = useState(0)
   const [hovered, setHovered] = useState(false)
@@ -16,7 +17,6 @@ export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
   }, [n, hovered, index])
 
   if (n === 0) return null
-  const bottle = bottles[Math.min(index, n - 1)]
 
   return (
     <div className="sc-bottles">
@@ -35,9 +35,16 @@ export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
             ‹
           </button>
         )}
-        <div className="bc-slide" key={bottle.name}>
-          <img src={bottle.img} alt={bottle.name} loading="lazy" />
-        </div>
+        <div className="bc-shelf" aria-hidden="true" />
+        {bottles.map((b, k) => (
+          <img
+            key={b.name + k}
+            className={`bc-img${k === index ? ' on' : ''}`}
+            src={b.img}
+            alt={k === index ? b.name : ''}
+            loading="lazy"
+          />
+        ))}
         {n > 1 && (
           <button
             className="bc-arrow right"

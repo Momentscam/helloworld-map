@@ -103,14 +103,18 @@ export default function CameraRig() {
         tmp.t.copy(rs.dir).multiplyScalar(30).add(rs.pos)
         c.target.lerp(tmp.t, k)
       } else {
-        // window seat: camera rides inside the vehicle (near-plane clips the shell)
-        const k = 1 - Math.pow(0.0004, dt)
-        tmp.p.copy(rs.pos)
-        tmp.p.y += target === 'plane' ? 0.55 : 0.45
+        // rooftop cam: perched just above and behind the vehicle, so the little
+        // red plane / gondola stays in frame while the panorama sweeps past
+        const k = 1 - Math.pow(0.002, dt)
+        const back = target === 'plane' ? 9 : 12
+        const up = target === 'plane' ? 3.5 : 4.5
+        tmp.p.copy(rs.dir).multiplyScalar(-back)
+        tmp.p.y = up
+        tmp.p.add(rs.pos)
         camera.position.lerp(tmp.p, k)
-        tmp.t.copy(rs.dir).multiplyScalar(45).add(rs.pos)
-        // gaze dips toward the city below
-        tmp.t.y -= target === 'plane' ? 10 : 9
+        tmp.t.copy(rs.dir).multiplyScalar(target === 'plane' ? 20 : 26).add(rs.pos)
+        // gaze dips gently toward the city below
+        tmp.t.y -= target === 'plane' ? 2 : 3
         c.target.lerp(tmp.t, k)
       }
       c.update()

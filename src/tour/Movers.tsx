@@ -175,6 +175,12 @@ function TramCar({ color, refObj }: { color: string; refObj: React.RefObject<THR
   )
 }
 
+/* the green tram calls at stations along the Diagonal — fractions of the
+   route, picked so the chase cam parks clear of L'Illa and the HQ tower */
+const TRAM_STOPS = [0.44, 0.76]
+const TRAM_SPEED = 16
+const TRAM_DWELL = 2.8
+
 function Trams() {
   const green = useMemo(() => makePath(ROADS.diagonal), [])
   const blue = useMemo(() => makePath(ROADS.tibidaboAve), [])
@@ -183,13 +189,65 @@ function Trams() {
   const g3 = useRef<THREE.Group>(null)
   const b1 = useRef<THREE.Group>(null)
 
-  useFrame(({ clock }) => {
+  // station distances unfolded over the ping-pong cycle, so the tram calls
+  // at the same platforms in both directions
+  const stationDs = useMemo(() => {
+    const T = green.total
+    const s = TRAM_STOPS.map((f) => f * T)
+    return [...s, ...s.map((v) => 2 * T - v)]
+  }, [green])
+
+  const drive = useRef({ head: 12, v: TRAM_SPEED, dwell: 0 })
+
+  // platform positions for the little station props
+  const stations = useMemo(
+    () =>
+      TRAM_STOPS.map((f) => {
+        const p = green.at(f * green.total)
+        return {
+          x: p.x + Math.cos(p.angle) * 5.4,
+          z: p.z - Math.sin(p.angle) * 5.4,
+          angle: p.angle,
+        }
+      }),
+    [green],
+  )
+
+  useFrame(({ clock }, dt) => {
     const t = clock.elapsedTime
-    const head = t * 16
+    const st = drive.current
+    // cap dt so throttled background-tab frames can't teleport the tram
+    const step = Math.min(dt, 0.1)
+    if (st.dwell > 0) {
+      st.dwell -= dt
+      st.v = 0
+    } else {
+      // distance to the next station ahead on the unfolded cycle; g > 0.2
+      // skips the platform we just pulled away from
+      const cycle = 2 * green.total
+      const phase = st.head % cycle
+      let gap = Infinity
+      for (const s of stationDs) {
+        const g = (s - phase + cycle) % cycle
+        if (g > 0.2 && g < gap) gap = g
+      }
+      if (gap <= 0.6) {
+        // dock at the platform and open the doors for a moment
+        st.head += gap
+        st.dwell = TRAM_DWELL
+        st.v = 0
+      } else {
+        // brake into the platform, pull away smoothly after the stop.
+        // The advance clamp lands inside the dock window, never past it.
+        const target = TRAM_SPEED * Math.min(1, 0.12 + (gap - 0.6) / 20)
+        st.v = THREE.MathUtils.damp(st.v, target, 3.2, step)
+        st.head += Math.min(st.v * step, gap - 0.3)
+      }
+    }
     const segs = [g1.current, g2.current, g3.current]
     segs.forEach((seg, i) => {
       if (!seg) return
-      const { d, flip } = pingPong(head - i * 5.4, green.total)
+      const { d, flip } = pingPong(st.head - i * 5.4, green.total)
       const p = green.at(Math.max(0, d))
       seg.position.set(p.x + Math.cos(p.angle) * 2.2, 1.3, p.z - Math.sin(p.angle) * 2.2)
       seg.rotation.y = p.angle + flip
@@ -212,6 +270,26 @@ function Trams() {
       <TramCar color="#3f9e63" refObj={g2} />
       <TramCar color="#3f9e63" refObj={g3} />
       <TramCar color="#2f6bb0" refObj={b1} />
+      {stations.map((s, i) => (
+        <group key={i} position={[s.x, 0, s.z]} rotation-y={s.angle}>
+          {/* platform slab */}
+          <mesh position={[0, 0.25, 0]}>
+            <boxGeometry args={[2.4, 0.5, 10]} />
+            <meshLambertMaterial color="#ddd2c3" />
+          </mesh>
+          {/* canopy on two posts */}
+          {[-3.2, 3.2].map((z) => (
+            <mesh key={z} position={[0.7, 1.9, z]}>
+              <boxGeometry args={[0.18, 3.3, 0.18]} />
+              <meshLambertMaterial color="#5a5e66" />
+            </mesh>
+          ))}
+          <mesh position={[0.45, 3.6, 0]}>
+            <boxGeometry args={[2, 0.16, 8.4]} />
+            <meshLambertMaterial color="#0056b5" />
+          </mesh>
+        </group>
+      ))}
     </group>
   )
 }
