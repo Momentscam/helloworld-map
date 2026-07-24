@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { StopBottle } from './stops'
 
-/** one bottle at a time on an open shelf: cross-fade between slides,
-    arrows + pill-dot pagination, 5 s auto-advance (paused on hover) */
+/** framed lifestyle photo cards: every shot of every available bottle becomes a
+    slide, cross-fading with arrows + pill-dot pagination and 5 s auto-advance */
 export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
   const [index, setIndex] = useState(0)
   const [hovered, setHovered] = useState(false)
-  const n = bottles.length
+  const slides = useMemo(
+    () => bottles.flatMap((b) => b.imgs.map((img) => ({ img, name: b.name }))),
+    [bottles],
+  )
+  const n = slides.length
 
   useEffect(() => {
     if (n < 2 || hovered) return
@@ -26,43 +30,42 @@ export default function BottleCarousel({ bottles }: { bottles: StopBottle[] }) {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        {n > 1 && (
-          <button
-            className="bc-arrow left"
-            onClick={() => setIndex((index - 1 + n) % n)}
-            aria-label="Previous bottle"
-          >
-            ‹
-          </button>
-        )}
-        <div className="bc-shelf" aria-hidden="true" />
-        {bottles.map((b, k) => (
+        {slides.map((s, k) => (
           <img
-            key={b.name + k}
+            key={s.img}
             className={`bc-img${k === index ? ' on' : ''}`}
-            src={b.img}
-            alt={k === index ? b.name : ''}
+            src={s.img}
+            alt={k === index ? s.name : ''}
             loading="lazy"
           />
         ))}
         {n > 1 && (
-          <button
-            className="bc-arrow right"
-            onClick={() => setIndex((index + 1) % n)}
-            aria-label="Next bottle"
-          >
-            ›
-          </button>
+          <>
+            <button
+              className="bc-arrow left"
+              onClick={() => setIndex((index - 1 + n) % n)}
+              aria-label="Previous bottle"
+            >
+              ‹
+            </button>
+            <button
+              className="bc-arrow right"
+              onClick={() => setIndex((index + 1) % n)}
+              aria-label="Next bottle"
+            >
+              ›
+            </button>
+          </>
         )}
       </div>
       {n > 1 && (
         <div className="bc-dots" role="tablist" aria-label="Bottles">
-          {bottles.map((b, k) => (
+          {slides.map((s, k) => (
             <button
-              key={b.name + k}
+              key={s.img}
               className={`bc-dot${k === index ? ' on' : ''}`}
               onClick={() => setIndex(k)}
-              aria-label={`Show ${b.name}`}
+              aria-label={`Show ${s.name}`}
               aria-selected={k === index}
               role="tab"
             />

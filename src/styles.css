@@ -456,39 +456,33 @@ button.pin-label:hover {
   color: #f0e9dc;
 }
 
-/* bottle carousel — an open shelf, not a tray: the cut-out bottle stands on
-   an elliptical ground shadow and cross-fades between slides */
+/* bottle carousel — a framed lifestyle photo card that cross-fades between
+   slides; a thin gold inner rule echoes the bottle-label frame */
 .bc-stage {
   position: relative;
-  height: 204px;
+  width: 100%;
+  height: 320px; /* portrait, to suit the standing-bottle lifestyle shots */
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px rgba(201, 162, 39, 0.5);
 }
 
 .bc-img {
   position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  height: 182px;
-  max-width: calc(100% - 76px);
-  object-fit: contain;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
-  filter: drop-shadow(0 4px 6px rgba(10, 34, 64, 0.14));
 }
 
 .bc-img.on {
   opacity: 1;
-}
-
-.bc-shelf {
-  position: absolute;
-  left: 50%;
-  bottom: 7px;
-  transform: translateX(-50%);
-  width: 58%;
-  height: 16px;
-  background: radial-gradient(ellipse at center, rgba(10, 34, 64, 0.26), rgba(10, 34, 64, 0) 68%);
 }
 
 .bc-arrow {
@@ -498,17 +492,20 @@ button.pin-label:hover {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--paper);
+  background: rgba(240, 233, 220, 0.9);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid var(--line);
-  color: var(--ink-soft);
+  color: var(--ink);
   font-size: 16px;
   line-height: 1;
+  box-shadow: 0 2px 6px rgba(10, 34, 64, 0.25);
   transition: background 0.12s, color 0.12s;
-  z-index: 1;
+  z-index: 2;
 }
 
-.bc-arrow.left { left: 8px; }
-.bc-arrow.right { right: 8px; }
+.bc-arrow.left { left: 10px; }
+.bc-arrow.right { right: 10px; }
 
 .bc-arrow:hover {
   background: var(--signal);
@@ -1461,23 +1458,17 @@ button:focus-visible {
     font-size: 10.5px;
   }
 
-  /* compact bottle shelf so it fits inside the card */
+  /* compact framed photo card so it fits inside the mobile bottom sheet */
   .sc-bottles {
     gap: 3px;
   }
 
   .bc-stage {
-    height: 92px;
-  }
-
-  .bc-img {
-    height: 78px;
-    bottom: 10px;
-  }
-
-  .bc-shelf {
-    bottom: 4px;
-    height: 10px;
+    height: 132px;
+    width: 46%;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px rgba(201, 162, 39, 0.5);
   }
 
   .bc-arrow {
