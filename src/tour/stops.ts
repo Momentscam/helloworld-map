@@ -20,11 +20,14 @@ export interface TourStop {
   world: [number, number, number]
 }
 
-// real lifestyle photo sets (optimized JPEGs; PNG masters kept alongside)
+// real lifestyle photos (optimized JPEGs; PNG masters kept alongside).
+// Each stop picks a specific shot per bottle — see the entries below.
 const B = '/images_map/bottles'
-const BARCELONA = [`${B}/Barcelona_01.jpg`, `${B}/Barcelona_02.jpg`]
-const CASA_BATLLO = [`${B}/CasaBatllo_01.jpg`, `${B}/CasaBatllo_02.jpg`]
-const IN_ART_WE_TRUST = [`${B}/Moco_01.jpg`, `${B}/Moco_02.jpg`]
+const BCN_01 = `${B}/Barcelona_01.jpg`
+const BCN_02 = `${B}/Barcelona_02.jpg`
+const CB_01 = `${B}/CasaBatllo_01.jpg`
+const CB_02 = `${B}/CasaBatllo_02.jpg`
+const MOCO_01 = `${B}/Moco_01.jpg`
 
 /** index 0 is the overview — numbered stops start at 1 */
 export const STOPS: TourStop[] = [
@@ -46,8 +49,8 @@ export const STOPS: TourStop[] = [
       'Gaudí’s dragon-backed masterpiece on Passeig de Gràcia, all bone-white balconies and shimmering trencadís scales. Our machine hides beneath the chimneys.',
     photo: '/images_map/casa_batllo.jpg',
     bottles: [
-      { name: 'Casa Batlló', imgs: CASA_BATLLO },
-      { name: 'Barcelona', imgs: BARCELONA },
+      { name: 'Casa Batlló', imgs: [CB_01] },
+      { name: 'Barcelona', imgs: [BCN_01] },
     ],
     cam: { pos: [36, 46, 32], target: [-11, 10, -33] },
     world: [-11, 22, -33],
@@ -60,8 +63,8 @@ export const STOPS: TourStop[] = [
       'Barcelona’s loudest larder since 1217, under a stained-glass arch off La Rambla. Pyramid-stacked fruit, curtains of jamón, and fresh juice in every colour.',
     photo: '/images_map/la_boqueria.jpeg',
     bottles: [
-      { name: 'Casa Batlló', imgs: CASA_BATLLO },
-      { name: 'Barcelona', imgs: BARCELONA },
+      { name: 'Casa Batlló', imgs: [CB_02] },
+      { name: 'Barcelona', imgs: [BCN_01] },
     ],
     cam: { pos: [90, 28, 136], target: [55, 5, 80] },
     world: [55, 14, 80],
@@ -73,7 +76,7 @@ export const STOPS: TourStop[] = [
     description:
       'Banksy, KAWS and digital art inside a 16th-century palace on Carrer Montcada. Old stone outside, new neon inside.',
     photo: '/images_map/moco_museum.jpg',
-    bottles: [{ name: 'In Art We Trust', imgs: IN_ART_WE_TRUST }],
+    bottles: [{ name: 'In Art We Trust', imgs: [MOCO_01] }],
     cam: { pos: [148, 26, 120], target: [110, 6, 72] },
     world: [110, 12, 72],
   },
@@ -84,7 +87,7 @@ export const STOPS: TourStop[] = [
     description:
       'The Sagrat Cor temple crowns the city’s highest peak, sharing its summit with a century-old funfair. On a clear day the whole board unrolls below.',
     photo: '/images_map/temple_tibidabo.jpeg',
-    bottles: [{ name: 'Barcelona', imgs: BARCELONA }],
+    bottles: [{ name: 'Barcelona', imgs: [BCN_02] }],
     cam: { pos: [-18, 172, -148], target: [-95, 122, -260] },
     world: [-95, 148, -260],
   },
@@ -96,8 +99,8 @@ export const STOPS: TourStop[] = [
       'Josep Tarradellas BCN–El Prat, the gateway to the board. Watch arrivals skim the sea, then grab a farewell bottle at T1.',
     photo: '/images_map/bcn_ariport.jpg',
     bottles: [
-      { name: 'Casa Batlló', imgs: CASA_BATLLO },
-      { name: 'Barcelona', imgs: BARCELONA },
+      { name: 'Casa Batlló', imgs: [CB_01] },
+      { name: 'Barcelona', imgs: [BCN_02] },
     ],
     cam: { pos: [-318, 85, 348], target: [-408, 4, 172] },
     world: [-400, 22, 185],
